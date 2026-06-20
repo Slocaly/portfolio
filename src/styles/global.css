@@ -1,0 +1,66 @@
+:root {
+  --color-bg: #efece4;
+  --color-bg-elevated: #f5f2eb;
+  --color-text: #26262b;
+  --color-text-muted: #767169;
+  --color-muted: #9a958c;
+  --color-border: #dcd7cc;
+  --color-block: #a4533c;
+  --color-block-text: #f7f3ec;
+  --color-accent: #a4533c;
+  --color-accent-2: #5b7c6b;
+
+  --font-display: "Archivo Expanded", "Archivo", sans-serif;
+  --font-sans: "Archivo", -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --content-width: 40rem;
+  --wide-width: 72rem;
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2.5rem;
+  --space-5: 4rem;
+}
+
+[data-theme="dark"] {
+  --color-bg: #1a1916;
+  --color-bg-elevated: #242119;
+  --color-text: #e6e1d8;
+  --color-text-muted: #8c8579;
+  --color-muted: #5e5952;
+  --color-border: #2e2b25;
+  --color-block: #c06350;
+  --color-block-text: #1a1916;
+  --color-accent: #c06350;
+  --color-accent-2: #6e9680;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+  color: var(--color-text);
+  background: var(--color-bg);
+  font-family: var(--font-sans);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--color-accent);
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}

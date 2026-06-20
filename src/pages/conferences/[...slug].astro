@@ -1,0 +1,103 @@
+---
+import { getCollection, getEntry, render } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import Navigation from "../../components/Navigation.astro";
+import SectionLabel from "../../components/SectionLabel.astro";
+import ConferenceHero from "../../components/ConferenceHero.astro";
+import ConferenceEventsList from "../../components/ConferenceEventsList.astro";
+import ConferenceGallery from "../../components/ConferenceGallery.astro";
+import ConferenceSpeakers from "../../components/ConferenceSpeakers.astro";
+
+export async function getStaticPaths() {
+  const conferences = await getCollection("conferences");
+  return conferences.map((conference) => ({
+    params: { slug: conference.id },
+    props: { conference },
+  }));
+}
+
+const { conference } = Astro.props;
+const { Content } = await render(conference);
+const { title, events, authors, tags, thumbnail, photos } = conference.data;
+const coSpeaker = authors ? await getEntry(authors) : null;
+---
+
+<Layout title={`${title} — Lucas Audart`}>
+  <header class="site-header">
+    <Navigation />
+  </header>
+
+  <ConferenceHero
+    title={title}
+    tags={tags}
+    eventsCount={events.length}
+    thumbnail={thumbnail}
+    coSpeaker={coSpeaker?.data}
+  />
+
+  <div class="body-wrapper">
+    <div class="body-grid">
+      <article class="abstract-col">
+        <SectionLabel label="Présentation" />
+        <div class="prose">
+          <Content />
+        </div>
+        {coSpeaker && (
+          <ConferenceSpeakers coSpeaker={coSpeaker.data} />
+        )}
+      </article>
+      <ConferenceEventsList events={events} />
+    </div>
+  </div>
+
+  <ConferenceGallery photos={photos} />
+</Layout>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--color-bg);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .body-wrapper {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 3rem 2rem 6.5rem;
+  }
+
+  .body-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 3fr);
+    gap: 5rem;
+    align-items: start;
+  }
+  .prose {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .prose :global(p) {
+    margin: 0;
+    font-size: 1.05rem;
+    line-height: 1.82;
+    color: var(--color-text-muted);
+  }
+  .prose :global(h2),
+  .prose :global(h3) {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: var(--color-text);
+  }
+
+  @media (max-width: 768px) {
+    .body-grid {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+  }
+</style>

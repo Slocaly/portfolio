@@ -1,0 +1,168 @@
+---
+import SectionLabel from "./SectionLabel.astro";
+
+interface Speaker {
+  name: string;
+  role?: string;
+  company?: string;
+  bio?: string;
+  photo?: string;
+  link?: string;
+}
+
+interface Props {
+  coSpeaker: Speaker;
+}
+
+const { coSpeaker } = Astro.props;
+
+const Card = coSpeaker.link ? "a" : "div";
+---
+
+<section class="speakers">
+  <SectionLabel label="Co-conférencier" />
+  <Card
+    class="speaker-card"
+    href={coSpeaker.link ?? undefined}
+    target={coSpeaker.link ? "_blank" : undefined}
+    rel={coSpeaker.link ? "noopener noreferrer" : undefined}
+  >
+    <div class="speaker-avatar" aria-hidden="true">
+      {
+        coSpeaker.photo ? (
+          <img src={coSpeaker.photo} alt="" class="avatar-img" />
+        ) : (
+          <span class="avatar-placeholder" />
+        )
+      }
+    </div>
+    <div class="speaker-info">
+      <div class="speaker-header">
+        <span class="speaker-name">{coSpeaker.name}</span>
+        {
+          (coSpeaker.role || coSpeaker.company) && (
+            <span class="speaker-meta">
+              {coSpeaker.role}
+              {coSpeaker.role && coSpeaker.company && (
+                <span class="speaker-sep" aria-hidden="true">
+                  ·
+                </span>
+              )}
+              {coSpeaker.company}
+            </span>
+          )
+        }
+      </div>
+      {coSpeaker.bio && <p class="speaker-bio">{coSpeaker.bio}</p>}
+    </div>
+  </Card>
+</section>
+
+<style>
+  .speakers {
+    margin-top: 3rem;
+  }
+
+  .speaker-card {
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+    padding: 1.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: 2px;
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow 0.15s ease;
+  }
+
+  a.speaker-card {
+    position: relative;
+  }
+
+  a.speaker-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.03);
+    opacity: 0;
+    transition: opacity 0.15s ease;
+  }
+
+  a.speaker-card:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  a.speaker-card:hover::after {
+    opacity: 1;
+  }
+
+  .speaker-avatar {
+    flex-shrink: 0;
+  }
+
+  .avatar-img,
+  .avatar-placeholder {
+    display: block;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+  }
+
+  .avatar-img {
+    object-fit: cover;
+  }
+
+  .avatar-placeholder {
+    background-color: #1a1915;
+    background-image: repeating-linear-gradient(
+      135deg,
+      #2c2a24 0px,
+      #2c2a24 1px,
+      transparent 1px,
+      transparent 10px
+    );
+  }
+
+  .speaker-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 0;
+  }
+
+  .speaker-header {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .speaker-name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--color-text);
+  }
+
+  .speaker-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .speaker-sep {
+    opacity: 0.4;
+  }
+
+  .speaker-bio {
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1.7;
+    color: var(--color-text-muted);
+  }
+</style>

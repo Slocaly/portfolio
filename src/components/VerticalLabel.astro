@@ -1,0 +1,25 @@
+<p class="label" aria-hidden="true">Lucas Audart — Éd. 01</p>
+
+<style>
+  .label {
+    position: fixed;
+    right: var(--space-1);
+    bottom: var(--space-2);
+    z-index: 998;
+    margin: 0;
+    writing-mode: sideways-lr;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    opacity: 0.5;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 48rem) {
+    .label {
+      display: none;
+    }
+  }
+</style>

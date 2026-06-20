@@ -1,0 +1,40 @@
+---
+import SectionLabel from "./SectionLabel.astro";
+
+interface Props {
+  photos?: string[];
+}
+
+const { photos } = Astro.props;
+---
+
+{photos && photos.length > 0 && (
+  <div class="gallery-wrapper">
+    <SectionLabel label="Photos" />
+    <div class="gallery-grid">
+      {photos.map((photo) => (
+        <div class="gallery-item">
+          <img src={photo} alt="" loading="lazy" decoding="async" class="gallery-img" />
+        </div>
+      ))}
+    </div>
+  </div>
+)}
+
+<style>
+  .gallery-wrapper { max-width: 72rem; margin: 0 auto; padding: 0 2rem 6rem; }
+  .gallery-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .gallery-img {
+    height: 220px;
+    width: auto;
+    display: block;
+  }
+
+  @media (max-width: 768px) {
+    .gallery-img { height: 150px; }
+  }
+</style>
