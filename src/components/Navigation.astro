@@ -12,38 +12,49 @@ const links = [
 const current = Astro.url.pathname;
 ---
 
-<nav>
-  <ul class="links">
-    {
-      links.map((link) => {
-        const isActive =
-          link.href === "/" ? current === "/" : current.startsWith(link.href);
-        return (
-          <li>
-            <a aria-current={isActive ? "page" : undefined} href={link.href}>
-              {link.label}
-            </a>
-          </li>
-        );
-      })
-    }
-  </ul>
+<header>
+  <div class="nav-inner">
+    <ul class="links">
+      {
+        links.map((link) => {
+          const isActive =
+            link.href === "/" ? current === "/" : current.startsWith(link.href);
+          return (
+            <li>
+              <a aria-current={isActive ? "page" : undefined} href={link.href}>
+                {link.label}
+              </a>
+            </li>
+          );
+        })
+      }
+    </ul>
 
-  <button id="theme-toggle" aria-label="Basculer le thème">
-    <IconSun class="icon-sun" />
-    <IconMoon class="icon-moon" />
-  </button>
-</nav>
+    <button id="theme-toggle" aria-label="Basculer le thème">
+      <IconSun class="icon-sun" />
+      <IconMoon class="icon-moon" />
+    </button>
+  </div>
+</header>
 
 <style>
-  nav {
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--color-bg);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .nav-inner {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: var(--space-3);
     max-width: var(--wide-width);
     margin: 0 auto;
-    padding: var(--space-3) var(--space-2);
+    padding: 0 var(--space-2);
+    height: 3.25rem;
   }
 
   .links {
@@ -81,6 +92,7 @@ const current = Astro.url.pathname;
     background: var(--color-bg-elevated);
     color: var(--color-text);
     cursor: pointer;
+    flex-shrink: 0;
   }
 
   :global(#theme-toggle svg) {

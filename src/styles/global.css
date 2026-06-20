@@ -9,12 +9,14 @@
   --color-block-text: #f7f3ec;
   --color-accent: #a4533c;
   --color-accent-2: #5b7c6b;
+  --color-bg-rgb: 239,236,228;
+  --color-stroke: #dcd7cc;
 
   --font-display: "Archivo Expanded", "Archivo", sans-serif;
   --font-sans: "Archivo", -apple-system, "Segoe UI", Roboto, sans-serif;
 
   --content-width: 40rem;
-  --wide-width: 72rem;
+  --wide-width: 82rem;
   --space-1: 0.5rem;
   --space-2: 1rem;
   --space-3: 1.5rem;
@@ -33,6 +35,8 @@
   --color-block-text: #1a1916;
   --color-accent: #c06350;
   --color-accent-2: #6e9680;
+  --color-bg-rgb: 26,25,22;
+  --color-stroke: #2e2b25;
 }
 
 * {
