@@ -68,3 +68,9 @@ svg {
   display: block;
   max-width: 100%;
 }
+
+@media (max-width: 639px) {
+  body {
+    padding-bottom: 4rem;
+  }
+}

@@ -1,12 +1,23 @@
 ---
 import IconSun from "./IconSun.astro";
 import IconMoon from "./IconMoon.astro";
+import IconHome from "./IconHome.astro";
+import IconUser from "./IconUser.astro";
+import IconMic from "./IconMic.astro";
+import IconPen from "./IconPen.astro";
 
-const links = [
+const desktopLinks = [
   { label: "Accueil", href: "/" },
   { label: "À propos", href: "/about" },
-  { label: "Conférences", href: "/conferences" },
+  { label: "Talks", href: "/conferences" },
   { label: "Blog", href: "/blog" },
+];
+
+const mobileLinks = [
+  { label: "Accueil", href: "/", Icon: IconHome },
+  { label: "Moi", href: "/about", Icon: IconUser },
+  { label: "Talks", href: "/conferences", Icon: IconMic },
+  { label: "Blog", href: "/blog", Icon: IconPen },
 ];
 
 const current = Astro.url.pathname;
@@ -16,7 +27,7 @@ const current = Astro.url.pathname;
   <div class="nav-inner">
     <ul class="links">
       {
-        links.map((link) => {
+        desktopLinks.map((link) => {
           const isActive =
             link.href === "/" ? current === "/" : current.startsWith(link.href);
           return (
@@ -29,13 +40,28 @@ const current = Astro.url.pathname;
         })
       }
     </ul>
-
-    <button id="theme-toggle" aria-label="Basculer le thème">
-      <IconSun class="icon-sun" />
-      <IconMoon class="icon-moon" />
-    </button>
   </div>
 </header>
+
+<button id="theme-toggle" aria-label="Basculer le thème">
+  <IconSun class="icon-sun" />
+  <IconMoon class="icon-moon" />
+</button>
+
+<nav class="bottom-nav" aria-label="Navigation principale">
+  {
+    mobileLinks.map(({ label, href, Icon }) => {
+      const isActive =
+        href === "/" ? current === "/" : current.startsWith(href);
+      return (
+        <a aria-current={isActive ? "page" : undefined} href={href}>
+          <Icon />
+          <span>{label}</span>
+        </a>
+      );
+    })
+  }
+</nav>
 
 <style>
   header {
@@ -49,7 +75,6 @@ const current = Astro.url.pathname;
   .nav-inner {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     gap: var(--space-3);
     max-width: var(--wide-width);
     margin: 0 auto;
@@ -81,6 +106,10 @@ const current = Astro.url.pathname;
   }
 
   #theme-toggle {
+    position: fixed;
+    top: 0.625rem;
+    right: var(--space-2);
+    z-index: 30;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -92,7 +121,6 @@ const current = Astro.url.pathname;
     background: var(--color-bg-elevated);
     color: var(--color-text);
     cursor: pointer;
-    flex-shrink: 0;
   }
 
   :global(#theme-toggle svg) {
@@ -110,6 +138,60 @@ const current = Astro.url.pathname;
 
   :global(html[data-theme="dark"] .icon-moon) {
     display: block;
+  }
+
+  /* Bottom nav */
+  .bottom-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 20;
+    background: var(--color-bg);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .bottom-nav a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.2rem;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    font-size: 0.625rem;
+    font-weight: 500;
+    flex: 1;
+    padding: 0.625rem 0;
+  }
+
+  .bottom-nav a:hover {
+    color: var(--color-text);
+  }
+
+  .bottom-nav a[aria-current="page"] {
+    color: var(--color-accent);
+  }
+
+  :global(.bottom-nav svg) {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  /* Responsive */
+  @media (max-width: 639px) {
+    header {
+      display: none;
+    }
+
+    #theme-toggle {
+      top: var(--space-2);
+    }
+
+    .bottom-nav {
+      display: flex;
+    }
   }
 </style>
 
