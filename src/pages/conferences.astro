@@ -1,0 +1,224 @@
+---
+import { getTalks, getConferenceStats, fmtDate } from "../lib/conferences";
+import Layout from "../layouts/Layout.astro";
+import Navigation from "../components/Navigation.astro";
+import ConferencesHeader from "../components/ConferencesHeader.astro";
+
+const talks = await getTalks();
+const stats = getConferenceStats(talks);
+
+type EventRow = {
+  conf: string;
+  dateMs: number;
+  loc: string;
+  fb: string | null;
+  vid: string | null;
+  talkTitle: string;
+  link: string;
+};
+
+const evs: EventRow[] = [];
+for (const talk of talks) {
+  for (const ev of talk.events) {
+    evs.push({ ...ev, talkTitle: talk.title, link: talk.link });
+  }
+}
+evs.sort((a, b) => b.dateMs - a.dateMs);
+
+type YearGroup = { year: number; evs: EventRow[] };
+const groups: YearGroup[] = [];
+for (const ev of evs) {
+  const yr = new Date(ev.dateMs).getFullYear();
+  const last = groups[groups.length - 1];
+  if (!last || last.year !== yr) groups.push({ year: yr, evs: [ev] });
+  else last.evs.push(ev);
+}
+---
+
+<Layout title="Conférences — Lucas Audart">
+  <header class="site-header">
+    <Navigation />
+  </header>
+
+  <ConferencesHeader stats={stats} activeTab="date" />
+
+  <div class="view-inner">
+    <p class="view-sub">
+      {evs.length} événements · de {groups[groups.length - 1]?.year} à aujourd'hui
+    </p>
+    {groups.map((g) => (
+      <div class="date-group">
+        <div class="date-year-col">
+          <span class="date-year-label">{g.year}</span>
+        </div>
+        <div class="date-events-col">
+          {g.evs.map((ev) => (
+            <div class="date-event-row">
+              <span class="date-ev-date">{fmtDate(ev.dateMs)}</span>
+              <a href={ev.link} class="date-ev-conf" title={ev.conf}>{ev.conf}</a>
+              <span class="date-ev-talk" title={ev.talkTitle}>{ev.talkTitle}</span>
+              <span class="date-ev-loc">
+                <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="flex-shrink:0;opacity:0.45">
+                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                </svg>
+                {ev.loc}
+              </span>
+              <div class="date-ev-links">
+                {ev.vid && (
+                  <a href={ev.vid} class="ev-link ev-link--vid" target="_blank" rel="noopener noreferrer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                    Vidéo
+                  </a>
+                )}
+                {ev.fb && (
+                  <a href={ev.fb} class="ev-link ev-link--fb" target="_blank" rel="noopener noreferrer">Avis</a>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+</Layout>
+
+<style>
+  :root {
+    --color-border-sub: #ece8df;
+  }
+  [data-theme="dark"] {
+    --color-border-sub: #222019;
+  }
+
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--color-bg);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .view-inner {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 3rem 2rem 6rem;
+  }
+
+  .view-sub {
+    margin: 0 0 2.5rem;
+    font-size: 0.72rem;
+    color: var(--color-muted);
+    letter-spacing: 0.04em;
+  }
+
+  .ev-link {
+    font-size: 0.63rem;
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+    white-space: nowrap;
+  }
+  .ev-link--vid {
+    color: var(--color-accent-2);
+  }
+  .ev-link--fb {
+    color: var(--color-accent);
+  }
+
+  .date-group {
+    display: grid;
+    grid-template-columns: 4.5rem 1fr;
+    gap: 0 3rem;
+    margin-bottom: 3rem;
+  }
+
+  .date-year-col {
+    border-top: 2px solid var(--color-accent);
+    padding-top: 0.875rem;
+  }
+
+  .date-year-label {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1rem;
+    color: var(--color-text);
+  }
+
+  .date-events-col .date-event-row {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 0.875rem 0;
+    border-top: 1px solid var(--color-border-sub);
+  }
+
+  .date-ev-date {
+    flex: 0 0 3.25rem;
+    font-size: 0.73rem;
+    color: var(--color-muted);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .date-ev-conf {
+    flex: 0 1 10.5rem;
+    min-width: 4rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.78rem;
+    color: var(--color-text);
+    line-height: 1.3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-decoration: none;
+  }
+  .date-ev-conf:hover {
+    color: var(--color-accent);
+  }
+
+  .date-ev-talk {
+    flex: 1;
+    min-width: 0;
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .date-ev-loc {
+    flex: 0 1 8.5rem;
+    min-width: 3rem;
+    font-size: 0.71rem;
+    color: var(--color-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .date-ev-links {
+    flex-shrink: 0;
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    min-width: 6.5rem;
+  }
+
+  @media (max-width: 640px) {
+    .date-group {
+      grid-template-columns: 1fr;
+    }
+    .date-ev-conf,
+    .date-ev-loc,
+    .date-ev-links {
+      display: none;
+    }
+  }
+</style>

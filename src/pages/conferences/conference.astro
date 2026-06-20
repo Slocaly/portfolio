@@ -1,0 +1,232 @@
+---
+import { getTalks, getConferenceStats, fmtDateFull } from "../../lib/conferences";
+import Layout from "../../layouts/Layout.astro";
+import Navigation from "../../components/Navigation.astro";
+import ConferencesHeader from "../../components/ConferencesHeader.astro";
+
+const talks = await getTalks();
+const stats = getConferenceStats(talks);
+
+type ConfEvent = {
+  talkTitle: string;
+  link: string;
+  dateMs: number;
+  loc: string;
+  fb: string | null;
+  vid: string | null;
+};
+
+type ConfGroup = { name: string; evs: ConfEvent[] };
+
+const confMap = new Map<string, ConfGroup>();
+for (const talk of talks) {
+  for (const ev of talk.events) {
+    if (!confMap.has(ev.conf)) confMap.set(ev.conf, { name: ev.conf, evs: [] });
+    confMap.get(ev.conf)!.evs.push({
+      talkTitle: talk.title,
+      link: talk.link,
+      dateMs: ev.dateMs,
+      loc: ev.loc,
+      fb: ev.fb,
+      vid: ev.vid,
+    });
+  }
+}
+
+const confs = [...confMap.values()].sort(
+  (a, b) => b.evs.length - a.evs.length || a.name.localeCompare(b.name),
+);
+const totalEvents = talks.reduce((s, t) => s + t.events.length, 0);
+---
+
+<Layout title="Conférences — Par conférence — Lucas Audart">
+  <header class="site-header">
+    <Navigation />
+  </header>
+
+  <ConferencesHeader stats={stats} activeTab="conference" />
+
+  <div class="view-inner">
+    <p class="view-sub">
+      {confs.length} conférences · {totalEvents} événements
+    </p>
+    {confs.map((conf) => {
+      const label = conf.evs.length === 1 ? "1 talk" : `${conf.evs.length} talks`;
+      const sorted = [...conf.evs].sort((a, b) => b.dateMs - a.dateMs);
+      return (
+        <div class="conf-group">
+          <div class="conf-group-header">
+            <h3 class="conf-name">{conf.name}</h3>
+            <span class="conf-count">{label}</span>
+          </div>
+          {sorted.map((ev) => (
+            <div class="conf-event-row">
+              <a href={ev.link} class="conf-ev-talk" title={ev.talkTitle}>{ev.talkTitle}</a>
+              <span class="conf-ev-date">{fmtDateFull(ev.dateMs)}</span>
+              <span class="conf-ev-loc">
+                <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="flex-shrink:0;opacity:0.45">
+                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                </svg>
+                {ev.loc}
+              </span>
+              <div class="conf-ev-links">
+                {ev.vid && (
+                  <a href={ev.vid} class="ev-link ev-link--vid" target="_blank" rel="noopener noreferrer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                    Vidéo
+                  </a>
+                )}
+                {ev.fb && (
+                  <a href={ev.fb} class="ev-link ev-link--fb" target="_blank" rel="noopener noreferrer">Avis</a>
+                )}
+              </div>
+            </div>
+          ))}
+          <div class="conf-group-spacer"></div>
+        </div>
+      );
+    })}
+    <div class="conf-list-footer"></div>
+  </div>
+</Layout>
+
+<style>
+  :root {
+    --color-border-sub: #ece8df;
+  }
+  [data-theme="dark"] {
+    --color-border-sub: #222019;
+  }
+
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--color-bg);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .view-inner {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 3rem 2rem 6rem;
+  }
+
+  .view-sub {
+    margin: 0 0 2.5rem;
+    font-size: 0.72rem;
+    color: var(--color-muted);
+    letter-spacing: 0.04em;
+  }
+
+  .ev-link {
+    font-size: 0.63rem;
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+    white-space: nowrap;
+  }
+  .ev-link--vid {
+    color: var(--color-accent-2);
+  }
+  .ev-link--fb {
+    color: var(--color-accent);
+  }
+
+  .conf-group {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .conf-group-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: 1.25rem 0 0.75rem;
+  }
+
+  .conf-name {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--color-text);
+    letter-spacing: -0.01em;
+  }
+
+  .conf-count {
+    font-size: 0.67rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    flex-shrink: 0;
+    margin-left: 1rem;
+  }
+
+  .conf-event-row {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 0.625rem 0 0.625rem 1.25rem;
+    border-top: 1px solid var(--color-border-sub);
+  }
+
+  .conf-ev-talk {
+    flex: 1;
+    min-width: 0;
+    font-size: 0.82rem;
+    color: var(--color-text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-decoration: none;
+  }
+  .conf-ev-talk:hover {
+    color: var(--color-accent);
+  }
+
+  .conf-ev-date {
+    flex-shrink: 0;
+    font-size: 0.72rem;
+    color: var(--color-muted);
+    white-space: nowrap;
+  }
+
+  .conf-ev-loc {
+    flex: 0 0 8.5rem;
+    font-size: 0.71rem;
+    color: var(--color-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .conf-ev-links {
+    flex-shrink: 0;
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    min-width: 6.5rem;
+  }
+
+  .conf-group-spacer {
+    height: 0.5rem;
+  }
+
+  .conf-list-footer {
+    border-top: 1px solid var(--color-border);
+  }
+
+  @media (max-width: 640px) {
+    .conf-ev-loc,
+    .conf-ev-links {
+      display: none;
+    }
+  }
+</style>

@@ -1,0 +1,215 @@
+---
+import { getTalks, getConferenceStats } from "../../lib/conferences";
+import Layout from "../../layouts/Layout.astro";
+import Navigation from "../../components/Navigation.astro";
+import ConferencesHeader from "../../components/ConferencesHeader.astro";
+
+const talks = await getTalks();
+const stats = getConferenceStats(talks);
+---
+
+<Layout title="Conférences — Par talk — Lucas Audart">
+  <header class="site-header">
+    <Navigation />
+  </header>
+
+  <ConferencesHeader stats={stats} activeTab="talk" />
+
+  <div class="view-inner">
+    <p class="view-sub">
+      {talks.length} talks · du plus récent au plus ancien
+    </p>
+    <div class="talk-grid">
+      {talks.map((talk, i) => {
+        const num = String(i + 1).padStart(2, "0");
+        const yrs = talk.events
+          .map((e) => new Date(e.dateMs).getFullYear())
+          .sort((a, b) => a - b);
+        const fy = yrs[0];
+        const ly = yrs[yrs.length - 1];
+        const range = fy === ly ? String(fy) : `${fy}–${ly}`;
+        const evLabel =
+          talk.events.length === 1
+            ? "1 événement"
+            : `${talk.events.length} événements`;
+        const co = talk.authorLabel.includes("&");
+        return (
+          <a href={talk.link} class="talk-card">
+            <div class="talk-card-top">
+              <span class="talk-num">{num}</span>
+              <span class="talk-date-range">{range}</span>
+            </div>
+            <div class="talk-card-body">
+              <h3 class="talk-title" title={talk.title}>{talk.title}</h3>
+              {talk.description && <p class="talk-desc">{talk.description}</p>}
+            </div>
+            {co && <p class="talk-authors">{talk.authorLabel}</p>}
+            <div class="talk-card-footer">
+              <div class="talk-tags">
+                {talk.tags.slice(0, 3).map((t) => (
+                  <span class="talk-tag">{t}</span>
+                ))}
+              </div>
+              <span class="talk-event-count">{evLabel}</span>
+            </div>
+          </a>
+        );
+      })}
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--color-bg);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .view-inner {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 3rem 2rem 6rem;
+  }
+
+  .view-sub {
+    margin: 0 0 2.5rem;
+    font-size: 0.72rem;
+    color: var(--color-muted);
+    letter-spacing: 0.04em;
+  }
+
+  .talk-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+
+  .talk-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    padding: 1.75rem;
+    gap: 1.25rem;
+    text-decoration: none;
+    transition: background 0.12s;
+  }
+  .talk-card:hover {
+    background: var(--color-border-sub);
+  }
+
+  .talk-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .talk-num {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    color: var(--color-accent);
+  }
+
+  .talk-date-range {
+    font-size: 0.7rem;
+    color: var(--color-muted);
+    font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
+  }
+
+  .talk-card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .talk-title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.9rem;
+    line-height: 1.35;
+    color: var(--color-text);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .talk-desc {
+    margin: 0;
+    font-size: 0.78rem;
+    line-height: 1.65;
+    color: var(--color-text-muted);
+  }
+
+  .talk-authors {
+    margin: 0;
+    font-size: 0.71rem;
+    color: var(--color-muted);
+    font-style: italic;
+  }
+
+  .talk-card-footer {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-border);
+    gap: 0.5rem;
+    margin-top: auto;
+  }
+
+  .talk-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+  }
+
+  .talk-tag {
+    font-size: 0.63rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    border: 1px solid rgba(164, 83, 60, 0.3);
+    padding: 0.2rem 0.45rem;
+    border-radius: 2px;
+  }
+  :global([data-theme="dark"]) .talk-tag {
+    border-color: rgba(192, 99, 80, 0.3);
+  }
+
+  .talk-event-count {
+    font-size: 0.72rem;
+    color: var(--color-muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  :root {
+    --color-border-sub: #ece8df;
+  }
+  [data-theme="dark"] {
+    --color-border-sub: #222019;
+  }
+
+  @media (max-width: 900px) {
+    .talk-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .talk-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

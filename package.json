@@ -10,8 +10,10 @@
     "lint": "oxlint"
   },
   "dependencies": {
+    "@astrojs/check": "^0.9.9",
     "@astrojs/mdx": "^5.0.6",
-    "astro": "^5.17.3"
+    "astro": "^5.17.3",
+    "typescript": "^6.0.3"
   },
   "devDependencies": {
     "oxlint": "^1.49.0"
