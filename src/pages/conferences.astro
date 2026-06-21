@@ -46,39 +46,42 @@ for (const ev of evs) {
     <p class="view-sub">
       {evs.length} événements · de {groups[groups.length - 1]?.year} à aujourd'hui
     </p>
-    {groups.map((g) => (
-      <div class="date-group">
-        <div class="date-year-col">
-          <span class="date-year-label">{g.year}</span>
+    {
+      groups.map((g) => (
+        <div class="date-group">
+          <div class="date-year-col">
+            <span class="date-year-label">{g.year}</span>
+          </div>
+          <div class="date-events-col">
+            {g.evs.map((ev) => (
+              <a href={ev.link} class="date-event-row">
+                <span class="date-ev-date">{fmtDate(ev.dateMs)}</span>
+                <span class="date-ev-conf" title={ev.conf}>
+                  {ev.conf}
+                </span>
+                <span class="date-ev-talk" title={ev.talkTitle}>
+                  {ev.talkTitle}
+                </span>
+                <span class="date-ev-loc">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="9"
+                    height="9"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    aria-hidden="true"
+                    style="flex-shrink:0;opacity:0.45"
+                  >
+                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                  </svg>
+                  {ev.loc}
+                </span>
+              </a>
+            ))}
+          </div>
         </div>
-        <div class="date-events-col">
-          {g.evs.map((ev) => (
-            <div class="date-event-row">
-              <span class="date-ev-date">{fmtDate(ev.dateMs)}</span>
-              <a href={ev.link} class="date-ev-conf" title={ev.conf}>{ev.conf}</a>
-              <span class="date-ev-talk" title={ev.talkTitle}>{ev.talkTitle}</span>
-              <span class="date-ev-loc">
-                <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="flex-shrink:0;opacity:0.45">
-                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                </svg>
-                {ev.loc}
-              </span>
-              <div class="date-ev-links">
-                {ev.vid && (
-                  <a href={ev.vid} class="ev-link ev-link--vid" target="_blank" rel="noopener noreferrer">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                    Vidéo
-                  </a>
-                )}
-                {ev.fb && (
-                  <a href={ev.fb} class="ev-link ev-link--fb" target="_blank" rel="noopener noreferrer">Avis</a>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    ))}
+      ))
+    }
   </div>
 </Layout>
 
@@ -112,7 +115,7 @@ for (const ev of evs) {
   }
 
   .ev-link {
-    font-size: 0.63rem;
+    font-size: 0.72rem;
     font-weight: 600;
     letter-spacing: 0.09em;
     text-transform: uppercase;
@@ -152,16 +155,20 @@ for (const ev of evs) {
     display: flex;
     align-items: center;
     gap: 1.5rem;
-    padding: 0.875rem 0;
+    padding: 0.875rem 1rem;
     border-top: 1px solid var(--color-border-sub);
   }
 
   .date-ev-date {
     flex: 0 0 3.25rem;
-    font-size: 0.73rem;
+    font-size: 0.85rem;
     color: var(--color-muted);
     white-space: nowrap;
     font-variant-numeric: tabular-nums;
+  }
+
+  a {
+    text-decoration: none;
   }
 
   .date-ev-conf {
@@ -169,7 +176,7 @@ for (const ev of evs) {
     min-width: 4rem;
     font-family: var(--font-display);
     font-weight: 700;
-    font-size: 0.78rem;
+    font-size: 0.88rem;
     color: var(--color-text);
     line-height: 1.3;
     overflow: hidden;
@@ -177,14 +184,16 @@ for (const ev of evs) {
     white-space: nowrap;
     text-decoration: none;
   }
-  .date-ev-conf:hover {
+
+  .date-event-row:hover {
     color: var(--color-accent);
+    background: var(--color-bg-elevated);
   }
 
   .date-ev-talk {
     flex: 1;
     min-width: 0;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     color: var(--color-text-muted);
     overflow: hidden;
     text-overflow: ellipsis;
@@ -194,7 +203,7 @@ for (const ev of evs) {
   .date-ev-loc {
     flex: 0 1 8.5rem;
     min-width: 3rem;
-    font-size: 0.71rem;
+    font-size: 0.8rem;
     color: var(--color-muted);
     display: flex;
     align-items: center;
@@ -215,7 +224,50 @@ for (const ev of evs) {
     .date-group {
       grid-template-columns: 1fr;
     }
-    .date-ev-conf,
+
+    .view-inner {
+      padding-top: 1rem;
+    }
+
+    .date-events-col .date-event-row {
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.2rem 0.5rem;
+      padding: 0.75rem 0;
+    }
+
+    /* Line 1: date (order 1) */
+    .date-ev-date {
+      flex: 0 0 auto;
+      order: 1;
+    }
+
+    /* Separator dot after the date, before conf name */
+    .date-ev-date::after {
+      content: "·";
+      margin-left: 0.5rem;
+      opacity: 0.4;
+    }
+
+    /* Line 1: conf name (order 2) — wraps freely, no truncation */
+    .date-ev-conf {
+      flex: 0 1 auto;
+      order: 2;
+      white-space: normal;
+      overflow: visible;
+      text-overflow: unset;
+    }
+
+    /* Line 2: talk title takes full width, forces its own row */
+    .date-ev-talk {
+      flex: 0 0 100%;
+      order: 3;
+      white-space: normal;
+      overflow: visible;
+      text-overflow: unset;
+    }
+
+    /* Hide location and links */
     .date-ev-loc,
     .date-ev-links {
       display: none;
