@@ -27,33 +27,39 @@ const coSpeaker = authors ? await getEntry(authors) : null;
     <Navigation />
   </header>
 
-  <ConferenceHero
-    title={title}
-    tags={tags}
-    eventsCount={events.length}
-    thumbnail={thumbnail}
-    coSpeaker={coSpeaker?.data}
-  />
+  <div class="conference-content">
+    <ConferenceHero
+      title={title}
+      tags={tags}
+      eventsCount={events.length}
+      thumbnail={thumbnail}
+      coSpeaker={coSpeaker?.data}
+    />
 
-  <div class="body-wrapper">
-    <div class="body-grid">
-      <article class="abstract-col">
-        <SectionLabel label="Présentation" />
-        <div class="prose">
-          <Content />
-        </div>
-        {coSpeaker && (
-          <ConferenceSpeakers coSpeaker={coSpeaker.data} />
-        )}
-      </article>
-      <ConferenceEventsList events={events} />
+    <div class="body-wrapper">
+      <div class="body-grid">
+        <article class="abstract-col">
+          <SectionLabel label="Présentation" />
+          <div class="prose">
+            <Content />
+          </div>
+          {coSpeaker && (
+            <ConferenceSpeakers coSpeaker={coSpeaker.data} />
+          )}
+        </article>
+        <ConferenceEventsList events={events} />
+      </div>
     </div>
-  </div>
 
-  <ConferenceGallery photos={photos} />
+    <ConferenceGallery photos={photos} />
+  </div>
 </Layout>
 
 <style>
+  .conference-content {
+    view-transition-name: conference-page;
+  }
+
   .site-header {
     position: sticky;
     top: 0;

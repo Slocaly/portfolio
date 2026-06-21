@@ -18,7 +18,7 @@ const { title, tags, eventsCount, thumbnail, coSpeaker } = Astro.props;
 >
   <div class="hero-gradient" aria-hidden="true"></div>
   <div class="hero-top-bar">
-    <a href="/conferences" class="back-link">
+    <a href="/conferences" class="back-link" id="back-link">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="14"
@@ -198,3 +198,11 @@ const { title, tags, eventsCount, thumbnail, coSpeaker } = Astro.props;
     }
   }
 </style>
+
+<script>
+  const link = document.getElementById("back-link") as HTMLAnchorElement | null;
+  if (link) {
+    const stored = sessionStorage.getItem("conferences-back");
+    if (stored) link.href = stored;
+  }
+</script>

@@ -70,6 +70,7 @@ const current = Astro.url.pathname;
     z-index: 20;
     background: var(--color-bg);
     border-bottom: 1px solid var(--color-border);
+    view-transition-name: site-header;
   }
 
   .nav-inner {
@@ -121,6 +122,7 @@ const current = Astro.url.pathname;
     background: var(--color-bg-elevated);
     color: var(--color-text);
     cursor: pointer;
+    view-transition-name: theme-toggle;
   }
 
   :global(#theme-toggle svg) {
@@ -150,6 +152,7 @@ const current = Astro.url.pathname;
     z-index: 20;
     background: var(--color-bg);
     border-top: 1px solid var(--color-border);
+    view-transition-name: bottom-nav;
   }
 
   .bottom-nav a {

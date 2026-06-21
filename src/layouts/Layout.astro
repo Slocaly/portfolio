@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import VerticalLabel from "../components/VerticalLabel.astro";
+import { ClientRouter } from "astro:transitions";
 
 const { title = "Lucas Audart - Développeur Frontend" } = Astro.props;
 ---
@@ -14,6 +15,7 @@ const { title = "Lucas Audart - Développeur Frontend" } = Astro.props;
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
+		<ClientRouter />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
@@ -31,6 +33,51 @@ const { title = "Lucas Audart - Développeur Frontend" } = Astro.props;
 					? "dark"
 					: "light");
 			document.documentElement.dataset.theme = theme;
+		</script>
+		<script is:inline>
+			const PAGE_ORDER = ["/", "/about", "/conferences"];
+
+			function getPageRank(pathname) {
+				const idx = PAGE_ORDER.findIndex((p) =>
+					p === "/" ? pathname === "/" : pathname.startsWith(p),
+				);
+				return idx === -1 ? 0 : idx;
+			}
+
+			let nextDirection = "forward";
+			let nextTransition = "default";
+
+			const isDetailPath = (p) => p.startsWith("/conferences/");
+
+			const CONF_TABS = ["/conferences", "/conferences/talk", "/conferences/conference"];
+
+			document.addEventListener("astro:before-preparation", (e) => {
+				const fromPath = window.location.pathname;
+				const toPath = e.to.pathname;
+
+				if (CONF_TABS.includes(fromPath) && toPath.startsWith("/conferences/") && !CONF_TABS.includes(toPath)) {
+					sessionStorage.setItem("conferences-back", fromPath);
+				}
+
+				if (isDetailPath(fromPath) || isDetailPath(toPath)) {
+					nextTransition = "conference";
+				} else {
+					nextTransition = "default";
+					const from = getPageRank(fromPath);
+					const to = getPageRank(toPath);
+					nextDirection = to >= from ? "forward" : "backward";
+				}
+			});
+
+			document.addEventListener("astro:after-swap", () => {
+				if (nextTransition === "conference") {
+					document.documentElement.dataset.transition = "conference";
+					delete document.documentElement.dataset.direction;
+				} else {
+					delete document.documentElement.dataset.transition;
+					document.documentElement.dataset.direction = nextDirection;
+				}
+			});
 		</script>
 	</head>
 	<body>

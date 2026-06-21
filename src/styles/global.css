@@ -76,3 +76,78 @@ svg {
     padding-bottom: 4rem;
   }
 }
+
+/* View transitions: directional slide + fade */
+@keyframes slide-fade-out-left {
+  to { transform: translateX(-1.5rem); opacity: 0; }
+}
+@keyframes slide-fade-in-right {
+  from { transform: translateX(1.5rem); opacity: 0; }
+}
+@keyframes slide-fade-out-right {
+  to { transform: translateX(1.5rem); opacity: 0; }
+}
+@keyframes slide-fade-in-left {
+  from { transform: translateX(-1.5rem); opacity: 0; }
+}
+
+/* Direction defaults (forward); overridden via data-direction="backward" */
+html {
+  --_vt-exit: slide-fade-out-left;
+  --_vt-enter: slide-fade-in-right;
+}
+html[data-direction="backward"] {
+  --_vt-exit: slide-fade-out-right;
+  --_vt-enter: slide-fade-in-left;
+}
+
+::view-transition-old(root) {
+  animation: var(--_vt-exit) 0.28s ease-in forwards;
+}
+::view-transition-new(root) {
+  animation: var(--_vt-enter) 0.28s ease-out forwards;
+}
+
+/* Conference detail: slide up to open, slide down to close */
+@keyframes conference-slide-up {
+  from { transform: translateY(100%); opacity: 0; }
+}
+@keyframes conference-slide-down {
+  to { transform: translateY(100%); opacity: 0; }
+}
+@keyframes vt-instant {
+  from { opacity: 1; }
+  to   { opacity: 1; }
+}
+
+/* When a conference detail is involved, keep root static (list shows through) */
+html[data-transition="conference"] {
+  --_vt-exit: vt-instant;
+  --_vt-enter: vt-instant;
+}
+
+::view-transition-new(conference-page) {
+  animation: conference-slide-up 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+::view-transition-old(conference-page) {
+  animation: conference-slide-down 0.3s ease-in forwards;
+}
+
+/* Persistent elements: instant swap, no animation */
+::view-transition-old(site-header),
+::view-transition-new(site-header),
+::view-transition-old(theme-toggle),
+::view-transition-new(theme-toggle),
+::view-transition-old(bottom-nav),
+::view-transition-new(bottom-nav),
+::view-transition-old(vertical-label),
+::view-transition-new(vertical-label) {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}
