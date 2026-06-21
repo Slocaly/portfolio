@@ -1,23 +1,402 @@
 ---
-import background from "../assets/background.svg";
+import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
 import Navigation from "../components/Navigation.astro";
-const name = "Lucas Audart";
+import SectionLabel from "../components/SectionLabel.astro";
+import { Image } from "astro:assets";
+
+const FR_MONTHS = [
+  "Janv.",
+  "Févr.",
+  "Mars",
+  "Avr.",
+  "Mai",
+  "Juin",
+  "Juil.",
+  "Août",
+  "Sept.",
+  "Oct.",
+  "Nov.",
+  "Déc.",
+];
+
+function fmtDate(d: Date) {
+  return `${FR_MONTHS[d.getMonth()]} ${d.getFullYear()}`;
+}
+
+function fmtPeriod(start: Date, end: Date | null) {
+  return `${fmtDate(start)} — ${end ? fmtDate(end) : "Aujourd'hui"}`;
+}
+
+const eduRaw = await getCollection("education");
+const educationList = eduRaw.sort((a, b) =>
+  b.data.years.localeCompare(a.data.years),
+);
+
+const raw = await getCollection("experiences");
+const experiences = raw
+  .sort((a, b) => b.data.startDate.getTime() - a.data.startDate.getTime())
+  .map((e) => ({
+    company: e.data.company,
+    role: e.data.role,
+    period: fmtPeriod(e.data.startDate, e.data.endDate),
+    loc: e.data.location,
+    desc: e.data.description,
+    tags: e.data.tags,
+  }));
+
+const startYear = Math.min(...raw.map((e) => e.data.startDate.getFullYear()));
 ---
 
-<div>
+<Layout title="À propos — Lucas Audart">
   <Navigation />
-  <img id="background" src={background.src} alt="" fetchpriority="high" />
-  About {name}
-</div>
+
+  <section class="hero">
+    <div class="wrap">
+      <SectionLabel label="Lucas Audart" />
+      <h1 class="hero-title">À propos</h1>
+      <p class="hero-intro">
+        Développeur Frontend spécialisé sur React, j'interviens aussi bien sur
+        la conception d'applications complexes que sur l'accompagnement et la
+        montée en compétences d'équipes techniques.
+
+        <br /><br />
+        
+        Speaker régulier dans les grandes conférences françaises
+         Devoxx, DevFest, Snowcamp), je m'investis activement dans la communauté
+        tech et aime partager mes retours d'expérience sur des sujets comme
+        TanStack Query, le React Compiler ou TypeScript.
+      </p>
+    </div>
+  </section>
+
+  <div class="exp-header">
+    <div class="wrap">
+      <div class="exp-header-inner">
+        <h2 class="exp-title">Expérience</h2>
+        <span class="exp-sub"
+          >{experiences.length} expériences · depuis {startYear}</span
+        >
+      </div>
+    </div>
+  </div>
+
+  <section class="exp-section">
+    <div class="wrap">
+      <div class="timeline">
+        {
+          experiences.map((job, i) => (
+            <div class="timeline-item">
+              <div class="timeline-rail" aria-hidden="true">
+                <span class="timeline-dot" />
+                {i < experiences.length - 1 && <span class="timeline-line" />}
+              </div>
+              <div class="timeline-body">
+                <div class="job-logo" aria-hidden="true">
+                  <Image
+                    src={raw[i].data.logo}
+                    alt=""
+                    width={132}
+                    height={132}
+                  />
+                </div>
+                <span class="job-period">{job.period}</span>
+                <h3 class="job-company">{job.company}</h3>
+                <div class="job-meta">
+                  <span class="job-role">{job.role}</span>
+                  <span class="job-loc">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="10"
+                      height="10"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                    </svg>
+                    {job.loc}
+                  </span>
+                </div>
+                <p class="job-desc">{job.desc}</p>
+                <div class="job-tags">
+                  {job.tags.map((tag) => (
+                    <span class="job-tag">{tag}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="edu-section">
+    <div class="wrap">
+      <SectionLabel label="Formation" />
+      <div class="edu-table">
+        {
+          educationList.map((edu) => (
+            <div class="edu-row">
+              <span class="edu-year">{edu.data.years}</span>
+              <span class="edu-diploma">{edu.data.diploma}</span>
+              <span class="edu-school">{edu.data.school}</span>
+              <span class="edu-loc">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="9"
+                  height="9"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                </svg>
+                {edu.data.location}
+              </span>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</Layout>
 
 <style>
-  #background {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    filter: blur(100px);
+  :root {
+    --color-border-sub: #ece8df;
+  }
+  [data-theme="dark"] {
+    --color-border-sub: #222019;
+  }
+
+  .wrap {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  /* Hero */
+  .hero {
+    padding: 4.5rem 0 3.25rem;
+  }
+  .hero-title {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(2.75rem, 6vw, 5rem);
+    letter-spacing: -0.025em;
+    color: var(--color-text);
+    line-height: 1;
+    margin: 0 0 2rem;
+  }
+  .hero-intro {
+    max-width: 42rem;
+    margin: 0;
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: var(--color-text-muted);
+  }
+
+  /* Experience header */
+  .exp-header {
+    border-top: 1px solid var(--color-border);
+  }
+  .exp-header-inner {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.75rem 0 0;
+  }
+  .exp-title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--color-text);
+    letter-spacing: -0.01em;
+  }
+  .exp-sub {
+    font-size: 0.72rem;
+    color: var(--color-muted);
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+
+  /* Timeline */
+  .exp-section {
+    padding: 2.5rem 0 1rem;
+  }
+  .timeline {
+    display: flex;
+    flex-direction: column;
+  }
+  .timeline-item {
+    display: grid;
+    grid-template-columns: 0.85rem 1fr;
+    gap: 0 1.75rem;
+  }
+  .timeline-rail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 0.35rem;
+  }
+  .timeline-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    flex-shrink: 0;
+  }
+  .timeline-line {
+    flex: 1;
+    width: 1px;
+    background: var(--color-border);
+    margin: 5px 0;
+  }
+  .timeline-body {
+    position: relative;
+    overflow: hidden;
+    padding-bottom: 2.25rem;
+    padding-right: 10rem;
+  }
+  .job-logo {
+    position: absolute;
+    top: 50%;
+    right: -0.875rem;
+    transform: translateY(-50%) rotate(-10deg);
+    opacity: 0.45;
+    width: 8.25rem;
+    height: 8.25rem;
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-muted);
+    flex-shrink: 0;
+  }
+  .job-period {
+    font-size: 0.67rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+  .job-company {
+    margin: 0.35rem 0 0;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--color-text);
+    letter-spacing: -0.01em;
+  }
+  .job-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 0.4rem;
+    flex-wrap: wrap;
+  }
+  .job-role {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+  }
+  .job-loc {
+    font-size: 0.73rem;
+    color: var(--color-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  .job-loc svg {
+    opacity: 0.5;
+    flex-shrink: 0;
+  }
+  .job-desc {
+    margin: 0.75rem 0 0;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--color-text-muted);
+    max-width: 40rem;
+  }
+  .job-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    margin-top: 0.9rem;
+  }
+  .job-tag {
+    font-size: 0.63rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(var(--color-accent-rgb), 0.85);
+    border: 1px solid rgba(var(--color-accent-rgb), 0.3);
+    padding: 0.2rem 0.45rem;
+    border-radius: 2px;
+  }
+
+  /* Education */
+  @media (max-width: 640px) {
+    .hero {
+      padding-top: 1.5rem;
+    }
+    .job-logo {
+      opacity: 0.1;
+    }
+    .timeline-body {
+      padding-right: 0;
+    }
+  }
+
+  .edu-section {
+    padding: 2rem 0 6rem;
+  }
+  .edu-table {
+    border-top: 1px solid var(--color-border);
+  }
+  .edu-row {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--color-border-sub);
+    flex-wrap: wrap;
+  }
+  .edu-year {
+    flex: 0 0 6.5rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.82rem;
+    color: var(--color-text);
+    font-variant-numeric: tabular-nums;
+  }
+  .edu-diploma {
+    flex: 2;
+    min-width: 12rem;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--color-text);
+  }
+  .edu-school {
+    flex: 1;
+    min-width: 8rem;
+    font-size: 0.82rem;
+    color: var(--color-text-muted);
+  }
+  .edu-loc {
+    flex: 0 0 5rem;
+    font-size: 0.73rem;
+    color: var(--color-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  .edu-loc svg {
+    opacity: 0.5;
+    flex-shrink: 0;
   }
 </style>

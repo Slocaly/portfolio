@@ -1,0 +1,10 @@
+{
+  "company": "Epitech Digital School",
+  "role": "Formateur React",
+  "startDate": "2022-10-01",
+  "endDate": "2022-12-01",
+  "location": "Lyon",
+  "description": "Réalisation de 18h de cours autour de React",
+  "tags": ["react"],
+  "logo": "/src/assets/experiences/epitech_logo.png"
+}

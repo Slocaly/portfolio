@@ -1,37 +1,53 @@
 ---
-import { getCollection } from "astro:content";
-import background from "../assets/background.svg";
 import Navigation from "../components/Navigation.astro";
 import Layout from "../layouts/Layout.astro";
-
-const articles = await getCollection("articles");
+import SectionLabel from "../components/SectionLabel.astro";
 ---
 
-<Layout>
-  <div>
-    <Navigation />
-    <img id="background" src={background.src} alt="" fetchpriority="high" />
-    Blog
-    <ul>
-      {
-        articles.map((article) => (
-          <li>
-            <a href={`/articles/${article.id}`}>{article.data.title}</a>
-          </li>
-        ))
-      }
-    </ul>
-  </div>
+<Layout
+  title="Blog"
+  description="Découvrez mes articles sur le développement web, les technologies et les conférences auxquelles j'ai participé."
+>
+  <Navigation />
+
+  <section class="hero">
+    <div class="wrap">
+      <SectionLabel label="Lucas Audart" />
+      <h1 class="hero-title">Blog</h1>
+    </div>
+  </section>
 </Layout>
 
 <style>
-  #background {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    filter: blur(100px);
+  .hero {
+    padding: 4.5rem 0 3.25rem;
+  }
+  .hero-title {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(2.75rem, 6vw, 5rem);
+    letter-spacing: -0.025em;
+    color: var(--color-text);
+    line-height: 1;
+    margin: 0 0 2rem;
+  }
+  .hero-intro {
+    max-width: 42rem;
+    margin: 0;
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: var(--color-text-muted);
+  }
+
+  .wrap {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  @media (max-width: 640px) {
+    .hero {
+      padding-top: 1.5rem;
+    }
   }
 </style>

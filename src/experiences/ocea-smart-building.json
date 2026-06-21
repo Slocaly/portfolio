@@ -1,0 +1,10 @@
+{
+  "company": "Océa Smart Building",
+  "role": "Développeur Frontend",
+  "startDate": "2021-10-15",
+  "endDate": "2022-12-31",
+  "location": "Lyon",
+  "description": "Développement d'un espace client et d'un espace d'administration en VueJs",
+  "tags": ["VueJs", "typescript", "Vuetify", "Lerna"],
+  "logo": "/src/assets/experiences/ocea_logo.png"
+}

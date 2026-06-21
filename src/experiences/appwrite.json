@@ -1,0 +1,10 @@
+{
+  "company": "Appwrite",
+  "role": "Appwrite Heroes",
+  "startDate": "2023-03-01",
+  "endDate": "2026-04-01",
+  "location": "Remote",
+  "description": "Ambassadeur de la communauté Appwrite",
+  "tags": ["Advocacy", "Open Source", "BaaS"],
+  "logo": "/src/assets/experiences/appwrite_logo.png"
+}

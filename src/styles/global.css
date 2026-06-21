@@ -10,6 +10,7 @@
   --color-accent: #a4533c;
   --color-accent-2: #5b7c6b;
   --color-bg-rgb: 239,236,228;
+  --color-accent-rgb: 164,83,60;
   --color-stroke: #dcd7cc;
 
   --font-display: "Archivo Expanded", "Archivo", sans-serif;
@@ -36,6 +37,7 @@
   --color-accent: #c06350;
   --color-accent-2: #6e9680;
   --color-bg-rgb: 26,25,22;
+  --color-accent-rgb: 192,99,80;
   --color-stroke: #2e2b25;
 }
 

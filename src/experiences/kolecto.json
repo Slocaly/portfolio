@@ -1,0 +1,10 @@
+{
+  "company": "Kolecto",
+  "role": "Développeur Frontend",
+  "startDate": "2023-06-01",
+  "endDate": null,
+  "location": "Paris",
+  "description": "Développement de l'application de facturation Kolecto, en vue du passage à la facturation électronique",
+  "tags": ["react", "typescript", "tanstack-query", "NextJs", "tailwindcss"],
+  "logo": "/src/assets/experiences/kolecto_logo.jpeg"
+}

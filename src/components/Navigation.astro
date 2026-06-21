@@ -9,15 +9,15 @@ import IconPen from "./IconPen.astro";
 const desktopLinks = [
   { label: "Accueil", href: "/" },
   { label: "À propos", href: "/about" },
-  { label: "Talks", href: "/conferences" },
-  { label: "Blog", href: "/blog" },
+  { label: "Conférences", href: "/conferences" },
+  // { label: "Blog", href: "/blog" },
 ];
 
 const mobileLinks = [
   { label: "Accueil", href: "/", Icon: IconHome },
   { label: "Moi", href: "/about", Icon: IconUser },
   { label: "Talks", href: "/conferences", Icon: IconMic },
-  { label: "Blog", href: "/blog", Icon: IconPen },
+  // { label: "Blog", href: "/blog", Icon: IconPen },
 ];
 
 const current = Astro.url.pathname;

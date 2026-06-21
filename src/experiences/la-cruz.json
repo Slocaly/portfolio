@@ -1,0 +1,10 @@
+{
+  "company": "La Cruz",
+  "role": "Développeur",
+  "startDate": "2019-06-01",
+  "endDate": "2023-05-01",
+  "location": "Lyon",
+  "description": "Création d'une association de développements, réalisation de plusieurs site vitrine et back-office personnel",
+  "tags": ["react", "firebase"],
+  "logo": "/src/assets/experiences/la_cruz_logo.jpeg"
+}

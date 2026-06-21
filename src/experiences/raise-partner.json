@@ -1,0 +1,10 @@
+{
+  "company": "Raise Partner",
+  "role": "Développeur Fullstack",
+  "startDate": "2023-01-01",
+  "endDate": "2023-06-30",
+  "location": "Grenoble",
+  "description": "Développement d'une application de gestion de portefeuille financier, avec un backend simple",
+  "tags": ["react", "typescript", "TanStack Query", "react-flow" , "NestJs"],
+  "logo": "/src/assets/experiences/raise_partner_logo.svg"
+}

@@ -58,8 +58,34 @@ const conferences = defineCollection({
   }),
 });
 
+const education = defineCollection({
+  loader: glob({ pattern: "**/*.json", base: "./src/education" }),
+  schema: z.object({
+    years: z.string(),
+    diploma: z.string(),
+    school: z.string(),
+    location: z.string(),
+  }),
+});
+
+const experiences = defineCollection({
+  loader: glob({ pattern: "**/*.json", base: "./src/experiences" }),
+  schema: z.object({
+    company: z.string(),
+    role: z.string(),
+    startDate: z.coerce.date(),
+    endDate: z.coerce.date().nullable(),
+    location: z.string(),
+    description: z.string(),
+    tags: z.array(z.string()),
+    logo: z.string(),
+  }),
+});
+
 export const collections = {
   articles,
   conferences,
-  authors
+  authors,
+  experiences,
+  education,
 };
