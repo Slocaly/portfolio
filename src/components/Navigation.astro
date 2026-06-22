@@ -199,12 +199,27 @@ const current = Astro.url.pathname;
 </style>
 
 <script>
-  const button = document.getElementById("theme-toggle");
+  function setupThemeToggle() {
+    const button = document.getElementById("theme-toggle");
+    button?.addEventListener("click", () => {
+      const current = document.documentElement.dataset.theme;
+      const next = current === "dark" ? "light" : "dark";
 
-  button?.addEventListener("click", () => {
-    const current = document.documentElement.dataset.theme;
-    const next = current === "dark" ? "light" : "dark";
-    document.documentElement.dataset.theme = next;
-    document.cookie = `theme=${next}; path=/; max-age=${60 * 60 * 24 * 365}`;
-  });
+      const prefersReduced = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+      if (!prefersReduced) {
+        document.documentElement.setAttribute("data-theme-animating", "");
+        setTimeout(
+          () => document.documentElement.removeAttribute("data-theme-animating"),
+          220
+        );
+      }
+
+      document.documentElement.dataset.theme = next;
+      document.cookie = `theme=${next}; path=/; max-age=${60 * 60 * 24 * 365}`;
+    });
+  }
+
+  document.addEventListener("astro:page-load", setupThemeToggle);
 </script>

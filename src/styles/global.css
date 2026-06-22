@@ -41,6 +41,13 @@
   --color-stroke: #2e2b25;
 }
 
+html[data-theme-animating] *,
+html[data-theme-animating] *::before,
+html[data-theme-animating] *::after {
+  transition: background-color 200ms ease, color 200ms ease,
+              border-color 200ms ease, fill 200ms ease, stroke 200ms ease !important;
+}
+
 * {
   box-sizing: border-box;
 }

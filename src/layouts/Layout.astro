@@ -70,6 +70,16 @@ const { title = "Lucas Audart - Développeur Frontend" } = Astro.props;
 			});
 
 			document.addEventListener("astro:after-swap", () => {
+				const stored = document.cookie
+					.split("; ")
+					.find((row) => row.startsWith("theme="))
+					?.split("=")[1];
+				document.documentElement.dataset.theme =
+					stored ??
+					(window.matchMedia("(prefers-color-scheme: dark)").matches
+						? "dark"
+						: "light");
+
 				if (nextTransition === "conference") {
 					document.documentElement.dataset.transition = "conference";
 					delete document.documentElement.dataset.direction;
