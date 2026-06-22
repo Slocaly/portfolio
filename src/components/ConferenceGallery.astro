@@ -2,7 +2,7 @@
 import SectionLabel from "./SectionLabel.astro";
 
 interface Props {
-  photos?: string[];
+  photos?: ImageMetadata[];
 }
 
 const { photos } = Astro.props;
@@ -14,7 +14,7 @@ const { photos } = Astro.props;
     <div class="gallery-grid">
       {photos.map((photo) => (
         <div class="gallery-item">
-          <img src={photo} alt="" loading="lazy" decoding="async" class="gallery-img" />
+          <img src={photo.src} alt="" loading="lazy" decoding="async" class="gallery-img" />
         </div>
       ))}
     </div>

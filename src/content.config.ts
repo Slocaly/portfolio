@@ -44,7 +44,7 @@ const ZEvent = z.object({
 
 const conferences = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/conferences" }),
-  schema: z.object({
+  schema: ({ image }) => z.object({
     title: z.string(),
     description: z.string().optional(),
     abstract: z.string().optional(),
@@ -53,8 +53,8 @@ const conferences = defineCollection({
     tags: z.array(z.string()),
     slides: z.string().url().optional(),
     references: z.array(z.string().url()).optional(),
-    thumbnail: z.string().optional(),
-    photos: z.array(z.string()).optional(),
+    thumbnail: image(),
+    photos: z.array(image()).optional(),
   }),
 });
 
@@ -70,7 +70,7 @@ const education = defineCollection({
 
 const experiences = defineCollection({
   loader: glob({ pattern: "**/*.json", base: "./src/experiences" }),
-  schema: z.object({
+  schema: ({ image }) => z.object({
     company: z.string(),
     role: z.string(),
     startDate: z.coerce.date(),
@@ -78,7 +78,7 @@ const experiences = defineCollection({
     location: z.string(),
     description: z.string(),
     tags: z.array(z.string()),
-    logo: z.string(),
+    logo: image(),
   }),
 });
 

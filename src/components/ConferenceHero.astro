@@ -1,20 +1,28 @@
 ---
+import { getImage } from "astro:assets";
+
 interface Props {
   title: string;
   tags: string[];
   eventsCount: number;
-  thumbnail?: string;
+  thumbnail?: ImageMetadata;
   coSpeaker?: {
     name: string;
-  }
+  };
 }
 
 const { title, tags, eventsCount, thumbnail, coSpeaker } = Astro.props;
+
+const backgroundImage = thumbnail
+  ? await getImage({ src: thumbnail, format: "avif", width: 1600, height: 900 })
+  : undefined;
 ---
 
 <div
   class="hero"
-  style={thumbnail ? `background-image: url('${thumbnail}')` : undefined}
+  style={thumbnail
+    ? `background-image: url('${backgroundImage?.src}')`
+    : undefined}
 >
   <div class="hero-gradient" aria-hidden="true"></div>
   <div class="hero-top-bar">
@@ -82,7 +90,7 @@ const { title, tags, eventsCount, thumbnail, coSpeaker } = Astro.props;
     inset: 0;
     background: linear-gradient(
       to bottom,
-      rgba(26, 25, 21, 0.80) 0%,
+      rgba(26, 25, 21, 0.8) 0%,
       rgba(26, 25, 21, 0.05) 20%,
       rgba(26, 25, 21, 0.05) 40%,
       rgba(26, 25, 21, 0.92) 100%
