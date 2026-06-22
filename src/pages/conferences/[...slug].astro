@@ -1,5 +1,6 @@
 ---
 import { getCollection, getEntry, render } from "astro:content";
+import { getImage } from "astro:assets";
 import Layout from "../../layouts/Layout.astro";
 import Navigation from "../../components/Navigation.astro";
 import SectionLabel from "../../components/SectionLabel.astro";
@@ -20,9 +21,22 @@ const { conference } = Astro.props;
 const { Content } = await render(conference);
 const { title, events, authors, tags, thumbnail, photos } = conference.data;
 const coSpeaker = authors ? await getEntry(authors) : null;
+
+const heroPreloadImage = thumbnail
+  ? await getImage({ src: thumbnail, format: "avif", width: 2600, height: 1500 })
+  : undefined;
 ---
 
 <Layout title={`${title} — Lucas Audart`}>
+  {heroPreloadImage && (
+    <link
+      slot="head"
+      rel="preload"
+      as="image"
+      href={heroPreloadImage.src}
+      fetchpriority="high"
+    />
+  )}
   <header class="site-header">
     <Navigation />
   </header>

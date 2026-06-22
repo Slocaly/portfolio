@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import SectionLabel from "./SectionLabel.astro";
 
 interface Props {
@@ -14,7 +15,15 @@ const { photos } = Astro.props;
     <div class="gallery-grid">
       {photos.map((photo) => (
         <div class="gallery-item">
-          <img src={photo.src} alt="" loading="lazy" decoding="async" class="gallery-img" />
+          <Image
+            src={photo}
+            height={220}
+            width={Math.round(220 * (photo.width / photo.height))}
+            alt=""
+            loading="lazy"
+            format="avif"
+            class="gallery-img"
+          />
         </div>
       ))}
     </div>

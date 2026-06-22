@@ -16,14 +16,35 @@ const { title, tags, eventsCount, thumbnail, coSpeaker } = Astro.props;
 const backgroundImage = thumbnail
   ? await getImage({ src: thumbnail, format: "avif", width: 1600, height: 900 })
   : undefined;
+
+const placeholderImage = thumbnail
+  ? await getImage({ src: thumbnail, format: "avif", width: 20 })
+  : undefined;
 ---
 
-<div
-  class="hero"
-  style={thumbnail
-    ? `background-image: url('${backgroundImage?.src}')`
-    : undefined}
->
+<div class="hero">
+  {thumbnail && (
+    <div
+      class="hero-bg-placeholder"
+      aria-hidden="true"
+      style={`background-image: url('${placeholderImage?.src}')`}
+    />
+  )}
+  {thumbnail && (
+    <div
+      class="hero-bg-full"
+      aria-hidden="true"
+      style={`background-image: url('${backgroundImage?.src}')`}
+    />
+  )}
+  {thumbnail && (
+    <img
+      class="hero-preload-trigger"
+      src={backgroundImage?.src}
+      aria-hidden="true"
+      alt=""
+    />
+  )}
   <div class="hero-gradient" aria-hidden="true"></div>
   <div class="hero-top-bar">
     <a href="/conferences" class="back-link" id="back-link">
@@ -77,12 +98,45 @@ const backgroundImage = thumbnail
     position: relative;
     height: clamp(420px, 52vh, 800px);
     background-color: #1a1915;
-    background-size: cover;
-    background-position: center;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+  }
+
+  .hero-bg-placeholder,
+  .hero-bg-full {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .hero-bg-placeholder {
+    filter: blur(20px);
+    transform: scale(1.1);
+    transition: opacity 0.4s ease;
+  }
+
+  .hero-bg-full {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .hero--loaded .hero-bg-full {
+    opacity: 1;
+  }
+
+  .hero--loaded .hero-bg-placeholder {
+    opacity: 0;
+  }
+
+  .hero-preload-trigger {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    pointer-events: none;
   }
 
   .hero-gradient {
@@ -213,4 +267,21 @@ const backgroundImage = thumbnail
     const stored = sessionStorage.getItem("conferences-back");
     if (stored) link.href = stored;
   }
+
+  function initHeroLqip() {
+    const trigger = document.querySelector(
+      ".hero-preload-trigger"
+    ) as HTMLImageElement | null;
+    const hero = document.querySelector(".hero") as HTMLElement | null;
+    if (trigger && hero) {
+      if (trigger.complete) {
+        hero.classList.add("hero--loaded");
+      } else {
+        trigger.addEventListener("load", () =>
+          hero.classList.add("hero--loaded")
+        );
+      }
+    }
+  }
+  document.addEventListener("astro:page-load", initHeroLqip);
 </script>
