@@ -6,7 +6,6 @@ const socials = {
   github: "https://github.com/Slocaly",
   linkedin: "https://www.linkedin.com/in/lucas-audart/",
   bluesky: "https://bsky.app/profile/slocaly.bsky.social",
-  email: "mailto:lucasaudart@gmail.com",
 };
 ---
 
@@ -15,7 +14,6 @@ const socials = {
 
   <div class="photo" aria-hidden="true">
     <Image src={ProfileImage} width="1100" height="800" alt="" />
-    <div class="photo-fade"></div>
   </div>
 
   <div class="content">
@@ -34,7 +32,7 @@ const socials = {
       </p>
       <ul class="socials">
         <li>
-          <a href={socials.github} aria-label="GitHub">
+          <a href={socials.github} target="_blank" aria-label="GitHub">
             <svg
               viewBox="0 0 1024 1024"
               xmlns="http://www.w3.org/2000/svg"
@@ -50,7 +48,7 @@ const socials = {
           </a>
         </li>
         <li>
-          <a href={socials.linkedin} aria-label="LinkedIn">
+          <a href={socials.linkedin} target="_blank" aria-label="LinkedIn">
             <svg
               width="256"
               height="256"
@@ -64,7 +62,7 @@ const socials = {
           </a>
         </li>
         <li>
-          <a href={socials.bluesky} aria-label="Bluesky">
+          <a href={socials.bluesky} target="_blank" aria-label="Bluesky">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="256"
@@ -76,22 +74,6 @@ const socials = {
                 d="M55.491 15.172c29.35 22.035 60.917 66.712 72.509 90.686 11.592-23.974 43.159-68.651 72.509-90.686C221.686-.727 256-13.028 256 26.116c0 7.818-4.482 65.674-7.111 75.068-9.138 32.654-42.436 40.983-72.057 35.942 51.775 8.812 64.946 38 36.501 67.187-54.021 55.433-77.644-13.908-83.696-31.676-1.11-3.257-1.63-4.78-1.637-3.485-.008-1.296-.527.228-1.637 3.485-6.052 17.768-29.675 87.11-83.696 31.676-28.445-29.187-15.274-58.375 36.5-67.187-29.62 5.041-62.918-3.288-72.056-35.942C4.482 91.79 0 33.934 0 26.116 0-13.028 34.314-.727 55.491 15.172Z"
               ></path></svg
             >
-          </a>
-        </li>
-        <li>
-          <a href={socials.email} aria-label="Email">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <rect x="2" y="4" width="20" height="16" rx="2"></rect>
-              <path d="m22 6-10 7L2 6"></path>
-            </svg>
           </a>
         </li>
       </ul>
@@ -144,6 +126,8 @@ const socials = {
     width: 90%;
     height: auto;
     max-height: 100%;
+    opacity: 0.9;
+    filter: drop-shadow(-28px 0 56px rgba(0, 0, 0, 0.32));
   }
 
   .figure {
@@ -153,18 +137,6 @@ const socials = {
     width: 100%;
     height: 100%;
     fill: var(--color-text);
-  }
-
-  .photo-fade {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      to right,
-      var(--color-bg) 0%,
-      rgba(var(--color-bg-rgb), 0.8) 22%,
-      rgba(var(--color-bg-rgb), 0.2) 52%,
-      transparent 78%
-    );
   }
 
   .content {
@@ -208,6 +180,9 @@ const socials = {
     letter-spacing: -0.03em;
     text-transform: uppercase;
     color: var(--color-text);
+    text-shadow:
+      4px 6px 0px rgba(0, 0, 0, 0.08),
+      8px 12px 24px rgba(0, 0, 0, 0.15);
   }
 
   .bio-block {

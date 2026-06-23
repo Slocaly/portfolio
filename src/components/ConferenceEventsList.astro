@@ -1,4 +1,6 @@
 ---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
 import SectionLabel from "./SectionLabel.astro";
 import IconCalendar from "./IconCalendar.astro";
 import IconMapPin from "./IconMapPin.astro";
@@ -9,7 +11,7 @@ interface Event {
   name: string;
   date: Date;
   location: { name: string; lat: number; lng: number };
-  thumbnail: string;
+  logo: ImageMetadata;
   photos?: string[];
   feedbackLink?: string;
   videoLink?: string;
@@ -40,6 +42,9 @@ const pad = (n: number) => String(n + 1).padStart(2, "0");
           <span class="event-num" aria-hidden="true">
             {pad(i)}
           </span>
+          <div class="event-logo" aria-hidden="true">
+            <Image src={event.logo} alt="" width={80} height={80} />
+          </div>
           <div class="event-details">
             <p class="event-name">{event.name}</p>
             <p class="event-meta-row">
@@ -98,11 +103,36 @@ const pad = (n: number) => String(n + 1).padStart(2, "0");
   }
 
   .event-item {
+    position: relative;
+    overflow: hidden;
     display: flex;
     align-items: baseline;
     gap: 1rem;
     border-top: 1px solid var(--color-border);
     padding: 1.25rem 0;
+    padding-right: 5rem;
+  }
+
+  .event-logo {
+    position: absolute;
+    top: 50%;
+    right: -0.5rem;
+    transform: translateY(-50%) rotate(-12deg);
+    opacity: 0.35;
+    width: 5rem;
+    height: 5rem;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+
+  .event-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
   }
 
   .event-item:last-child {

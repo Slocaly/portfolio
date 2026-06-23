@@ -2,7 +2,6 @@
 import { getCollection, getEntry, render } from "astro:content";
 import { getImage } from "astro:assets";
 import Layout from "../../layouts/Layout.astro";
-import Navigation from "../../components/Navigation.astro";
 import SectionLabel from "../../components/SectionLabel.astro";
 import ConferenceHero from "../../components/ConferenceHero.astro";
 import ConferenceEventsList from "../../components/ConferenceEventsList.astro";
@@ -19,7 +18,7 @@ export async function getStaticPaths() {
 
 const { conference } = Astro.props;
 const { Content } = await render(conference);
-const { title, events, authors, tags, thumbnail, photos } = conference.data;
+const { title, events, authors, tags, thumbnail, photos, slides, videoLink } = conference.data;
 const coSpeaker = authors ? await getEntry(authors) : null;
 
 const heroPreloadImage = thumbnail
@@ -37,9 +36,6 @@ const heroPreloadImage = thumbnail
       fetchpriority="high"
     />
   )}
-  <header class="site-header">
-    <Navigation />
-  </header>
 
   <div class="conference-content">
     <ConferenceHero
@@ -48,6 +44,8 @@ const heroPreloadImage = thumbnail
       eventsCount={events.length}
       thumbnail={thumbnail}
       coSpeaker={coSpeaker?.data}
+      slides={slides}
+      videoLink={videoLink}
     />
 
     <div class="body-wrapper">
