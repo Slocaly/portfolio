@@ -49,7 +49,7 @@ const { title = "Lucas Audart - Développeur Frontend", description = "" } =
 			let nextDirection = "forward";
 			let nextTransition = "default";
 
-			const isDetailPath = (p) => p.startsWith("/conferences/");
+			const isDetailPath = (p) => p.startsWith("/conferences/") && !CONF_TABS.includes(p);
 
 			const CONF_TABS = [
 				"/conferences",
