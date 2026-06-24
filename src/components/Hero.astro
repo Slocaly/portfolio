@@ -10,7 +10,12 @@ const socials = {
 ---
 
 <section class="hero">
-  <p class="ghost" aria-hidden="true">Frontend</p>
+  <div class="ghost" aria-hidden="true">
+    <div class="ghost-track">
+      <span>Frontend&nbsp;•&nbsp;Frontend&nbsp;•&nbsp;</span>
+      <span>Frontend&nbsp;•&nbsp;Frontend&nbsp;•&nbsp;</span>
+    </div>
+  </div>
 
   <div class="left-col">
     <div class="content">
@@ -117,21 +122,35 @@ const socials = {
   .ghost {
     position: absolute;
     top: -0.75rem;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0;
+    right: 0;
+    overflow: hidden;
     margin: 0;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+  }
+
+  .ghost-track {
+    display: flex;
+    white-space: nowrap;
+    line-height: 1;
+    animation: ghost-marquee 14s linear infinite;
+  }
+
+  .ghost-track span {
     font-family: var(--font-display);
     font-weight: 800;
     font-size: clamp(7rem, 34vw, 22rem);
-    line-height: 1;
     text-transform: uppercase;
     letter-spacing: -0.02em;
     color: transparent;
     -webkit-text-stroke: 1.5px var(--color-stroke);
-    white-space: nowrap;
-    pointer-events: none;
-    user-select: none;
-    z-index: 0;
+  }
+
+  @keyframes ghost-marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
   }
   .photo {
     width: 100%;
