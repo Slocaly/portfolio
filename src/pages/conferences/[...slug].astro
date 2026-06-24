@@ -26,7 +26,7 @@ const heroPreloadImage = thumbnail
   : undefined;
 ---
 
-<Layout title={`${title} — Lucas Audart`}>
+<Layout title={`${title} — Lucas Audart`} description={conference.data.description}>
   {heroPreloadImage && (
     <link
       slot="head"

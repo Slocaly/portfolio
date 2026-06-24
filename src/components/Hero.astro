@@ -12,24 +12,21 @@ const socials = {
 <section class="hero">
   <p class="ghost" aria-hidden="true">Frontend</p>
 
-  <div class="photo" aria-hidden="true">
-    <Image src={ProfileImage} width="1100" height="800" alt="" />
-  </div>
-
-  <div class="content">
-    <h1 class="name">
-      Lucas<br />
-      Audart
-    </h1>
-    <div class="eyebrow">
-      <span class="eyebrow-line"></span>
-      <span class="eyebrow-text">Développeur Frontend</span>
-    </div>
-    <div class="bio-block">
-      <p class="bio">
-        Web dev for Kolecto, Speaker 🎙️ Frontend enthusiast, aspirant filmmaker
-      </p>
-      <ul class="socials">
+  <div class="left-col">
+    <div class="content">
+      <h1 class="name">
+        Lucas<br />
+        Audart
+      </h1>
+      <div class="eyebrow">
+        <span class="eyebrow-line"></span>
+        <span class="eyebrow-text">Développeur Frontend</span>
+      </div>
+      <div class="bio-block">
+        <p class="bio">
+          Web dev for Kolecto, Speaker 🎙️ Frontend enthusiast, aspirant filmmaker
+        </p>
+        <ul class="socials">
         <li>
           <a href={socials.github} target="_blank" aria-label="GitHub">
             <svg
@@ -75,11 +72,21 @@ const socials = {
             >
           </a>
         </li>
-      </ul>
+        </ul>
+      </div>
+    </div>
+    <div class="photo-responsive" aria-hidden="true">
+      <Image src={ProfileImage} width="600" height="300" alt="" />
+    </div>
+    <div class="talks-wrapper">
+      <slot />
     </div>
   </div>
-  <div class="photo-responsive" aria-hidden="true">
-    <Image src={ProfileImage} width="600" height="300" alt="" />
+
+  <div class="right-col">
+    <div class="photo" aria-hidden="true">
+      <Image src={ProfileImage} width="1100" height="800" alt="" />
+    </div>
   </div>
 </section>
 
@@ -88,6 +95,23 @@ const socials = {
     position: relative;
     height: calc(100dvh - 3.25rem);
     overflow: hidden;
+    display: grid;
+    grid-template-columns: 48% 52%;
+  }
+
+  .left-col {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .right-col {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: flex-end;
   }
 
   .ghost {
@@ -110,12 +134,8 @@ const socials = {
     z-index: 0;
   }
   .photo {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    width: 52%;
+    width: 100%;
     height: 100%;
-    z-index: 1;
     pointer-events: none;
     display: flex;
     align-items: flex-end;
@@ -142,9 +162,7 @@ const socials = {
   .content {
     position: relative;
     z-index: 2;
-    max-width: var(--wide-width);
-    margin: 0 auto;
-    padding: 4rem 2rem 0;
+    padding: 4rem 2rem 0 max(2rem, calc((100vw - var(--wide-width)) / 2));
   }
 
   .eyebrow {
@@ -171,6 +189,30 @@ const socials = {
     color: var(--color-accent);
   }
 
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.5rem 1.125rem;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 9999px;
+  }
+
+  .status-badge p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--color-text);
+  }
+
+  .status-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--color-accent);
+    flex-shrink: 0;
+  }
+
   .name {
     margin: 0;
     font-family: var(--font-display);
@@ -189,7 +231,7 @@ const socials = {
     position: relative;
     z-index: 2;
     max-width: 45rem;
-    margin-top: 5rem;
+    margin-top: 1rem;
     display: flex;
     flex-direction: column;
     gap: 2.5rem;
@@ -239,8 +281,20 @@ const socials = {
     display: none;
   }
 
+  .talks-wrapper {
+    padding-left: max(0px, calc((100vw - var(--wide-width)) / 2));
+  }
+
   @media (max-width: 1000px) {
-    .photo {
+    .hero {
+      grid-template-columns: 1fr;
+    }
+
+    .right-col {
+      display: none;
+    }
+
+    .talks-wrapper {
       display: none;
     }
 

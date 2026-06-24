@@ -1,5 +1,9 @@
 ---
-import { getTalks, getConferenceStats, fmtDateFull } from "../../lib/conferences";
+import {
+  getTalks,
+  getConferenceStats,
+  fmtDateFull,
+} from "../../lib/conferences";
 import Layout from "../../layouts/Layout.astro";
 import Navigation from "../../components/Navigation.astro";
 import ConferencesHeader from "../../components/ConferencesHeader.astro";
@@ -39,7 +43,10 @@ const confs = [...confMap.values()].sort(
 const totalEvents = talks.reduce((s, t) => s + t.events.length, 0);
 ---
 
-<Layout title="Conférences — Par conférence — Lucas Audart">
+<Layout
+  title="Conférences — Par conférence — Lucas Audart"
+  description="Découvrez les conférences auxquelles j'ai participé en tant que speaker, avec des informations sur les événements, les dates et les liens vers les vidéos et les slides."
+>
   <header class="site-header">
     <Navigation />
   </header>
@@ -50,42 +57,75 @@ const totalEvents = talks.reduce((s, t) => s + t.events.length, 0);
     <p class="view-sub">
       {confs.length} conférences · {totalEvents} événements
     </p>
-    {confs.map((conf) => {
-      const label = conf.evs.length === 1 ? "1 talk" : `${conf.evs.length} talks`;
-      const sorted = [...conf.evs].sort((a, b) => b.dateMs - a.dateMs);
-      return (
-        <div class="conf-group">
-          <div class="conf-group-header">
-            <h3 class="conf-name">{conf.name}</h3>
-            <span class="conf-count">{label}</span>
-          </div>
-          {sorted.map((ev) => (
-            <div class="conf-event-row">
-              <a href={ev.link} class="conf-ev-talk" title={ev.talkTitle}>{ev.talkTitle}</a>
-              <span class="conf-ev-date">{fmtDateFull(ev.dateMs)}</span>
-              <span class="conf-ev-loc">
-                <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="flex-shrink:0;opacity:0.45">
-                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                </svg>
-                {ev.loc}
-              </span>
-              <div class="conf-ev-links">
-                {ev.vid && (
-                  <a href={ev.vid} class="ev-link ev-link--vid" target="_blank" rel="noopener noreferrer">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                    Vidéo
-                  </a>
-                )}
-                {ev.fb && (
-                  <a href={ev.fb} class="ev-link ev-link--fb" target="_blank" rel="noopener noreferrer">Avis</a>
-                )}
-              </div>
+    {
+      confs.map((conf) => {
+        const label =
+          conf.evs.length === 1 ? "1 talk" : `${conf.evs.length} talks`;
+        const sorted = [...conf.evs].sort((a, b) => b.dateMs - a.dateMs);
+        return (
+          <div class="conf-group">
+            <div class="conf-group-header">
+              <h3 class="conf-name">{conf.name}</h3>
+              <span class="conf-count">{label}</span>
             </div>
-          ))}
-          <div class="conf-group-spacer"></div>
-        </div>
-      );
-    })}
+            {sorted.map((ev) => (
+              <div class="conf-event-row">
+                <a href={ev.link} class="conf-ev-talk" title={ev.talkTitle}>
+                  {ev.talkTitle}
+                </a>
+                <span class="conf-ev-date">{fmtDateFull(ev.dateMs)}</span>
+                <span class="conf-ev-loc">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="9"
+                    height="9"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    aria-hidden="true"
+                    style="flex-shrink:0;opacity:0.45"
+                  >
+                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                  </svg>
+                  {ev.loc}
+                </span>
+                <div class="conf-ev-links">
+                  {ev.vid && (
+                    <a
+                      href={ev.vid}
+                      class="ev-link ev-link--vid"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="9"
+                        height="9"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                      >
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                      Vidéo
+                    </a>
+                  )}
+                  {ev.fb && (
+                    <a
+                      href={ev.fb}
+                      class="ev-link ev-link--fb"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Avis
+                    </a>
+                  )}
+                </div>
+              </div>
+            ))}
+            <div class="conf-group-spacer" />
+          </div>
+        );
+      })
+    }
     <div class="conf-list-footer"></div>
   </div>
 </Layout>

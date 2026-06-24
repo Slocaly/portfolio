@@ -1,0 +1,218 @@
+---
+import { getCollection } from 'astro:content';
+
+const FRENCH_MONTHS = [
+  'janvier', 'février', 'mars', 'avril', 'mai', 'juin',
+  'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre',
+];
+
+function formatDate(date: Date): string {
+  return `${date.getDate()} ${FRENCH_MONTHS[date.getMonth()]} ${date.getFullYear()}`;
+}
+
+function stripEmoji(str: string): string {
+  return str.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '').trim();
+}
+
+const today = new Date();
+const allConferences = await getCollection('conferences');
+
+type TalkEntry = {
+  id: string;
+  title: string;
+  eventName: string;
+  eventDate: Date;
+  status: 'PROCHAIN' | 'PASSÉ';
+};
+
+const talks: TalkEntry[] = allConferences
+  .map(conf => {
+    const events = conf.data.events;
+    const futureEvents = events
+      .filter(e => e.date > today)
+      .sort((a, b) => a.date.getTime() - b.date.getTime());
+    const pastEvents = events
+      .filter(e => e.date <= today)
+      .sort((a, b) => b.date.getTime() - a.date.getTime());
+
+    if (futureEvents.length > 0) {
+      return {
+        id: conf.id,
+        title: stripEmoji(conf.data.title),
+        eventName: futureEvents[0].name,
+        eventDate: futureEvents[0].date,
+        status: 'PROCHAIN' as const,
+      };
+    } else if (pastEvents.length > 0) {
+      return {
+        id: conf.id,
+        title: stripEmoji(conf.data.title),
+        eventName: pastEvents[0].name,
+        eventDate: pastEvents[0].date,
+        status: 'PASSÉ' as const,
+      };
+    }
+    return null;
+  })
+  .filter((t): t is TalkEntry => t !== null);
+
+const sorted = [
+  ...talks
+    .filter(t => t.status === 'PROCHAIN')
+    .sort((a, b) => a.eventDate.getTime() - b.eventDate.getTime()),
+  ...talks
+    .filter(t => t.status === 'PASSÉ')
+    .sort((a, b) => b.eventDate.getTime() - a.eventDate.getTime()),
+].slice(0, 3);
+---
+
+<section class="recent-talks">
+  <div class="recent-talks-header">
+    <span class="section-label">TALKS RÉCENTS</span>
+    <a href="/conferences" class="see-all">TOUT VOIR →</a>
+  </div>
+  <div class="talks-list">
+    {sorted.map(talk => (
+      <a href={`/conferences/${talk.id}`} class="talk-row">
+        <span class="talk-date">{formatDate(talk.eventDate)}</span>
+        <span class="talk-title">{talk.title}</span>
+        <span class={`talk-status ${talk.status === 'PROCHAIN' ? 'status-upcoming' : 'status-past'}`}>
+          {talk.status}
+        </span>
+        <span class="talk-event">{talk.eventName}</span>
+      </a>
+    ))}
+  </div>
+</section>
+
+<style>
+  .recent-talks {
+    padding-bottom: 2rem;
+  }
+
+  .recent-talks-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+
+  .section-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .see-all {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  .see-all:hover {
+    text-decoration: underline;
+  }
+
+  .talks-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .talk-row {
+    display: grid;
+    grid-template-columns: 9rem 1fr auto auto;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.125rem 0;
+    border-top: 1px solid var(--color-border);
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .talk-row:last-child {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .talk-row:hover .talk-title {
+    color: var(--color-accent);
+  }
+
+  .talk-date {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-text);
+    white-space: nowrap;
+  }
+
+  .talk-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color 0.15s;
+  }
+
+.talk-status {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .status-upcoming {
+    color: var(--color-accent);
+  }
+
+  .status-past {
+    color: var(--color-text-muted);
+  }
+
+  .talk-event {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+  }
+
+  @media (max-width: 100rem) {
+    .recent-talks {
+      padding-left: 2rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .talk-row {
+      grid-template-columns: 1fr auto;
+      grid-template-rows: auto auto;
+      gap: 0.25rem 0.75rem;
+    }
+
+    .talk-date {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .talk-status {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    .talk-title {
+      grid-column: 1;
+      grid-row: 2;
+    }
+
+    .talk-event {
+      grid-column: 2;
+      grid-row: 2;
+      text-align: right;
+    }
+  }
+</style>

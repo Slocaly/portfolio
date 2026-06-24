@@ -8,7 +8,10 @@ const talks = await getTalks();
 const stats = getConferenceStats(talks);
 ---
 
-<Layout title="Conférences — Par talk — Lucas Audart">
+<Layout
+  title="Conférences — Par talk — Lucas Audart"
+  description="Découvrez les conférences auxquelles j'ai participé en tant que speaker, avec des informations sur les événements, les dates et les liens vers les vidéos et les slides."
+>
   <header class="site-header">
     <Navigation />
   </header>
@@ -20,41 +23,47 @@ const stats = getConferenceStats(talks);
       {talks.length} talks · du plus récent au plus ancien
     </p>
     <div class="talk-grid">
-      {talks.map((talk, i) => {
-        const num = String(i + 1).padStart(2, "0");
-        const yrs = talk.events
-          .map((e) => new Date(e.dateMs).getFullYear())
-          .sort((a, b) => a - b);
-        const fy = yrs[0];
-        const ly = yrs[yrs.length - 1];
-        const range = fy === ly ? String(fy) : `${fy}–${ly}`;
-        const evLabel =
-          talk.events.length === 1
-            ? "1 événement"
-            : `${talk.events.length} événements`;
-        const co = talk.authorLabel.includes("&");
-        return (
-          <a href={talk.link} class="talk-card">
-            <div class="talk-card-top">
-              <span class="talk-num">{num}</span>
-              <span class="talk-date-range">{range}</span>
-            </div>
-            <div class="talk-card-body">
-              <h3 class="talk-title" title={talk.title}>{talk.title}</h3>
-              {talk.description && <p class="talk-desc">{talk.description}</p>}
-            </div>
-            {co && <p class="talk-authors">{talk.authorLabel}</p>}
-            <div class="talk-card-footer">
-              <div class="talk-tags">
-                {talk.tags.slice(0, 3).map((t) => (
-                  <span class="talk-tag">{t}</span>
-                ))}
+      {
+        talks.map((talk, i) => {
+          const num = String(i + 1).padStart(2, "0");
+          const yrs = talk.events
+            .map((e) => new Date(e.dateMs).getFullYear())
+            .sort((a, b) => a - b);
+          const fy = yrs[0];
+          const ly = yrs[yrs.length - 1];
+          const range = fy === ly ? String(fy) : `${fy}–${ly}`;
+          const evLabel =
+            talk.events.length === 1
+              ? "1 événement"
+              : `${talk.events.length} événements`;
+          const co = talk.authorLabel.includes("&");
+          return (
+            <a href={talk.link} class="talk-card">
+              <div class="talk-card-top">
+                <span class="talk-num">{num}</span>
+                <span class="talk-date-range">{range}</span>
               </div>
-              <span class="talk-event-count">{evLabel}</span>
-            </div>
-          </a>
-        );
-      })}
+              <div class="talk-card-body">
+                <h3 class="talk-title" title={talk.title}>
+                  {talk.title}
+                </h3>
+                {talk.description && (
+                  <p class="talk-desc">{talk.description}</p>
+                )}
+              </div>
+              {co && <p class="talk-authors">{talk.authorLabel}</p>}
+              <div class="talk-card-footer">
+                <div class="talk-tags">
+                  {talk.tags.slice(0, 3).map((t) => (
+                    <span class="talk-tag">{t}</span>
+                  ))}
+                </div>
+                <span class="talk-event-count">{evLabel}</span>
+              </div>
+            </a>
+          );
+        })
+      }
     </div>
   </div>
 </Layout>

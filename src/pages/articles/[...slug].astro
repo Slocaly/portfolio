@@ -14,6 +14,9 @@ const { article } = Astro.props;
 const { Content } = await render(article);
 ---
 
-<Layout>
+<Layout
+  title={`${article.data.title} — Lucas Audart`}
+  description={article.data.description}
+>
   <Content />
 </Layout>

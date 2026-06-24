@@ -3,7 +3,8 @@ import "../styles/global.css";
 import VerticalLabel from "../components/VerticalLabel.astro";
 import { ClientRouter } from "astro:transitions";
 
-const { title = "Lucas Audart - Développeur Frontend" } = Astro.props;
+const { title = "Lucas Audart - Développeur Frontend", description = "" } =
+	Astro.props;
 ---
 
 <!doctype html>
@@ -11,9 +12,10 @@ const { title = "Lucas Audart - Développeur Frontend" } = Astro.props;
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
+		<link rel="icon" type="image/png" href="/favicon.png" sizes="32x32" />
+		<link rel="icon" href="/favicon.ico" sizes="32x32" />
 		<meta name="generator" content={Astro.generator} />
+		<meta name="description" content={description} />
 		<title>{title}</title>
 		<ClientRouter />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -49,13 +51,21 @@ const { title = "Lucas Audart - Développeur Frontend" } = Astro.props;
 
 			const isDetailPath = (p) => p.startsWith("/conferences/");
 
-			const CONF_TABS = ["/conferences", "/conferences/talk", "/conferences/conference"];
+			const CONF_TABS = [
+				"/conferences",
+				"/conferences/talk",
+				"/conferences/conference",
+			];
 
 			document.addEventListener("astro:before-preparation", (e) => {
 				const fromPath = window.location.pathname;
 				const toPath = e.to.pathname;
 
-				if (CONF_TABS.includes(fromPath) && toPath.startsWith("/conferences/") && !CONF_TABS.includes(toPath)) {
+				if (
+					CONF_TABS.includes(fromPath) &&
+					toPath.startsWith("/conferences/") &&
+					!CONF_TABS.includes(toPath)
+				) {
 					sessionStorage.setItem("conferences-back", fromPath);
 				}
 
