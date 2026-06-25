@@ -1,87 +1,141 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection } from "astro:content";
 
 const FRENCH_MONTHS = [
-  'janvier', 'février', 'mars', 'avril', 'mai', 'juin',
-  'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre',
+  "janvier",
+  "février",
+  "mars",
+  "avril",
+  "mai",
+  "juin",
+  "juillet",
+  "août",
+  "septembre",
+  "octobre",
+  "novembre",
+  "décembre",
 ];
 
 function formatDate(date: Date): string {
   return `${date.getDate()} ${FRENCH_MONTHS[date.getMonth()]} ${date.getFullYear()}`;
 }
 
-function stripEmoji(str: string): string {
-  return str.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '').trim();
-}
-
 const today = new Date();
-const allConferences = await getCollection('conferences');
+const allConferences = await getCollection("conferences");
+
+const internalEvents = [
+  "Technozaure (Conférence interne Zenika)",
+  "Conférence interne Kolecto",
+];
 
 type TalkEntry = {
   id: string;
   title: string;
   eventName: string;
   eventDate: Date;
-  status: 'PROCHAIN' | 'PASSÉ';
+  status: "PROCHAIN" | "PASSÉ";
 };
 
 const talks: TalkEntry[] = allConferences
-  .map(conf => {
-    const events = conf.data.events;
+  .map((conf) => {
+    const events = conf.data.events.filter(
+      (event) => !internalEvents.includes(event.name),
+    );
     const futureEvents = events
-      .filter(e => e.date > today)
+      .filter((e) => e.date > today)
       .sort((a, b) => a.date.getTime() - b.date.getTime());
     const pastEvents = events
-      .filter(e => e.date <= today)
+      .filter((e) => e.date <= today)
       .sort((a, b) => b.date.getTime() - a.date.getTime());
 
     if (futureEvents.length > 0) {
       return {
         id: conf.id,
-        title: stripEmoji(conf.data.title),
+        title: conf.data.title,
         eventName: futureEvents[0].name,
         eventDate: futureEvents[0].date,
-        status: 'PROCHAIN' as const,
+        status: "PROCHAIN" as const,
       };
     } else if (pastEvents.length > 0) {
       return {
         id: conf.id,
-        title: stripEmoji(conf.data.title),
+        title: conf.data.title,
         eventName: pastEvents[0].name,
         eventDate: pastEvents[0].date,
-        status: 'PASSÉ' as const,
+        status: "PASSÉ" as const,
       };
     }
     return null;
   })
   .filter((t): t is TalkEntry => t !== null);
 
-const sorted = [
-  ...talks
-    .filter(t => t.status === 'PROCHAIN')
-    .sort((a, b) => a.eventDate.getTime() - b.eventDate.getTime()),
-  ...talks
-    .filter(t => t.status === 'PASSÉ')
-    .sort((a, b) => b.eventDate.getTime() - a.eventDate.getTime()),
-].slice(0, 3);
+console.log("allConferences : ", talks);
+
+const incommingTalksSorted = talks
+  .filter((t) => t.status === "PROCHAIN")
+  .sort((a, b) => a.eventDate.getTime() - b.eventDate.getTime());
+
+const passedTalksSorted = talks
+  .filter((t) => t.status === "PASSÉ")
+  .sort((a, b) => b.eventDate.getTime() - a.eventDate.getTime())
+  .slice(
+    0,
+    (incommingTalksSorted.length === 0 ? 4 : incommingTalksSorted.length) - 1,
+  );
 ---
 
 <section class="recent-talks">
-  <div class="recent-talks-header">
+  {
+    incommingTalksSorted.length !== 0 && (
+      <>
+        <div class="talks-header">
+          <span class="section-label">TALKS À VENIR</span>
+          <a href="/conferences" class="see-all">
+            TOUT VOIR →
+          </a>
+        </div>
+        <div class="talks-list">
+          {incommingTalksSorted.map((talk) => (
+            <a href={`/conferences/${talk.id}`} class="talk-row">
+              <span class="talk-date">{formatDate(talk.eventDate)}</span>
+              <span class="talk-title">{talk.title}</span>
+              <span
+                class={`talk-status ${talk.status === "PROCHAIN" ? "status-upcoming" : "status-past"}`}
+              >
+                {talk.status}
+              </span>
+              <span class="talk-event">{talk.eventName}</span>
+            </a>
+          ))}
+        </div>
+      </>
+    )
+  }
+  <div class="talks-header recent">
     <span class="section-label">TALKS RÉCENTS</span>
-    <a href="/conferences" class="see-all">TOUT VOIR →</a>
+    {
+      incommingTalksSorted.length === 0 && (
+        <a href="/conferences" class="see-all">
+          TOUT VOIR →
+        </a>
+      )
+    }
   </div>
   <div class="talks-list">
-    {sorted.map(talk => (
-      <a href={`/conferences/${talk.id}`} class="talk-row">
-        <span class="talk-date">{formatDate(talk.eventDate)}</span>
-        <span class="talk-title">{talk.title}</span>
-        <span class={`talk-status ${talk.status === 'PROCHAIN' ? 'status-upcoming' : 'status-past'}`}>
-          {talk.status}
-        </span>
-        <span class="talk-event">{talk.eventName}</span>
-      </a>
-    ))}
+    {
+      passedTalksSorted.map((talk) => (
+        <a href={`/conferences/${talk.id}`} class="talk-row">
+          <span class="talk-date">{formatDate(talk.eventDate)}</span>
+          <span class="talk-title">{talk.title}</span>
+          <span
+            class={`talk-status ${talk.status === "PROCHAIN" ? "status-upcoming" : "status-past"}`}
+          >
+            {talk.status}
+          </span>
+          <span class="talk-event">{talk.eventName}</span>
+        </a>
+      ))
+    }
   </div>
 </section>
 
@@ -90,11 +144,15 @@ const sorted = [
     padding-bottom: 2rem;
   }
 
-  .recent-talks-header {
+  .talks-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 0.75rem;
+  }
+
+  .recent {
+    margin-top: 2rem;
   }
 
   .section-label {
@@ -159,7 +217,7 @@ const sorted = [
     transition: color 0.15s;
   }
 
-.talk-status {
+  .talk-status {
     font-size: 0.68rem;
     font-weight: 700;
     letter-spacing: 0.12em;
