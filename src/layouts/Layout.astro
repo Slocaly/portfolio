@@ -58,8 +58,9 @@ const { title = "Lucas Audart - Développeur Frontend", description = "" } =
 			];
 
 			document.addEventListener("astro:before-preparation", (e) => {
-				const fromPath = window.location.pathname;
-				const toPath = e.to.pathname;
+				const norm = (p) => (p === "/" ? p : p.replace(/\/$/, ""));
+				const fromPath = norm(window.location.pathname);
+				const toPath = norm(e.to.pathname);
 
 				if (
 					CONF_TABS.includes(fromPath) &&
@@ -69,13 +70,17 @@ const { title = "Lucas Audart - Développeur Frontend", description = "" } =
 					sessionStorage.setItem("conferences-back", fromPath);
 				}
 
-				if (isDetailPath(fromPath) || isDetailPath(toPath)) {
-					nextTransition = "conference";
+				if (CONF_TABS.includes(fromPath) && CONF_TABS.includes(toPath)) {
+					nextTransition = "tab";
 				} else {
-					nextTransition = "default";
-					const from = getPageRank(fromPath);
-					const to = getPageRank(toPath);
-					nextDirection = to >= from ? "forward" : "backward";
+					if (isDetailPath(fromPath) || isDetailPath(toPath)) {
+						nextTransition = "conference";
+					} else {
+						nextTransition = "default";
+						const from = getPageRank(fromPath);
+						const to = getPageRank(toPath);
+						nextDirection = to >= from ? "forward" : "backward";
+					}
 				}
 			});
 
@@ -90,8 +95,8 @@ const { title = "Lucas Audart - Développeur Frontend", description = "" } =
 						? "dark"
 						: "light");
 
-				if (nextTransition === "conference") {
-					document.documentElement.dataset.transition = "conference";
+				if (nextTransition === "conference" || nextTransition === "tab") {
+					document.documentElement.dataset.transition = nextTransition;
 					delete document.documentElement.dataset.direction;
 				} else {
 					delete document.documentElement.dataset.transition;

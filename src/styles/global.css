@@ -126,10 +126,20 @@ html[data-direction="backward"] {
   from { opacity: 1; }
   to   { opacity: 1; }
 }
+@keyframes vt-hidden {
+  from { opacity: 0; }
+  to   { opacity: 0; }
+}
 
 /* When a conference detail is involved, keep root static (list shows through) */
 html[data-transition="conference"] {
   --_vt-exit: vt-instant;
+  --_vt-enter: vt-instant;
+}
+
+/* Tab switches: old page invisible, new page visible immediately — no slide */
+html[data-transition="tab"] {
+  --_vt-exit: vt-hidden;
   --_vt-enter: vt-instant;
 }
 
@@ -151,6 +161,7 @@ html[data-transition="conference"] {
 ::view-transition-new(vertical-label) {
   animation: none;
 }
+
 
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-old(root),
