@@ -7,6 +7,7 @@ import ConferenceHero from "../../components/ConferenceHero.astro";
 import ConferenceEventsList from "../../components/ConferenceEventsList.astro";
 import ConferenceGallery from "../../components/ConferenceGallery.astro";
 import ConferenceSpeakers from "../../components/ConferenceSpeakers.astro";
+import ConferenceMap from "../../components/ConferenceMap.astro";
 
 export async function getStaticPaths() {
   const conferences = await getCollection("conferences");
@@ -64,6 +65,7 @@ const heroPreloadImage = thumbnail
     </div>
 
     <ConferenceGallery photos={photos} />
+    <ConferenceMap locations={events.map((e) => e.location)} />
   </div>
 </Layout>
 
