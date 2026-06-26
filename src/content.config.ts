@@ -18,12 +18,12 @@ const articles = defineCollection({
 
 const authors = defineCollection({
   loader: glob({ pattern: "**/*.json", base: "./src/authors" }),
-  schema: z.object({
+  schema: ({ image }) => z.object({
     name: z.string(),
     role: z.string().optional(),
     company: z.string().optional(),
     link: z.string().url().optional(),
-    photo: z.string().url().optional(),
+    photo: image().optional(),
     bio: z.string().optional(),
   }),
 });

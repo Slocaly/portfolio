@@ -23,8 +23,8 @@ const mobileLinks = [
 const current = Astro.url.pathname;
 ---
 
-<header>
-  <div class="nav-inner">
+<header role="banner">
+  <nav role="navigation" class="nav-inner">
     <ul class="links">
       {
         desktopLinks.map((link) => {
@@ -40,7 +40,7 @@ const current = Astro.url.pathname;
         })
       }
     </ul>
-  </div>
+  </nav>
 </header>
 
 <button id="theme-toggle" aria-label="Basculer le thème">

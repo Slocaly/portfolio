@@ -1,14 +1,54 @@
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/archivo-400.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/archivo-500.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/archivo-600.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Archivo Expanded';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/archivo-expanded-700.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Archivo Expanded';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url('/fonts/archivo-expanded-800.woff2') format('woff2');
+}
+
 :root {
   --color-bg: #efece4;
   --color-bg-elevated: #f5f2eb;
   --color-text: #26262b;
-  --color-text-muted: #767169;
+  --color-text-muted: #636059;
   --color-muted: #9a958c;
   --color-border: #dcd7cc;
   --color-block: #a4533c;
   --color-block-text: #f7f3ec;
   --color-accent: #a4533c;
-  --color-accent-2: #5b7c6b;
+  --color-accent-2: #4d6b5a;
   --color-bg-rgb: 239,236,228;
   --color-accent-rgb: 164,83,60;
   --color-stroke: #dcd7cc;

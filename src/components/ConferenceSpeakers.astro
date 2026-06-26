@@ -1,4 +1,6 @@
 ---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
 import SectionLabel from "./SectionLabel.astro";
 
 interface Speaker {
@@ -6,7 +8,7 @@ interface Speaker {
   role?: string;
   company?: string;
   bio?: string;
-  photo?: string;
+  photo?: ImageMetadata;
   link?: string;
 }
 
@@ -30,7 +32,7 @@ const Card = coSpeaker.link ? "a" : "div";
     <div class="speaker-avatar" aria-hidden="true">
       {
         coSpeaker.photo ? (
-          <img src={coSpeaker.photo} alt="" class="avatar-img" />
+          <Image src={coSpeaker.photo} width={96} height={96} alt="" class="avatar-img" loading="lazy" />
         ) : (
           <span class="avatar-placeholder" />
         )

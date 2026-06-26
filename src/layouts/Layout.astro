@@ -18,12 +18,9 @@ const { title = "Lucas Audart - Développeur Frontend", description = "" } =
 		<meta name="description" content={description} />
 		<title>{title}</title>
 		<ClientRouter />
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link
-			href="https://fonts.googleapis.com/css2?family=Archivo+Expanded:wght@700;800&family=Archivo:wght@400;500;600&display=swap"
-			rel="stylesheet"
-		/>
+		<link rel="preload" href="/fonts/archivo-400.woff2" as="font" type="font/woff2" crossorigin />
+		<link rel="preload" href="/fonts/archivo-expanded-700.woff2" as="font" type="font/woff2" crossorigin />
+		<link rel="preload" href="/fonts/archivo-expanded-800.woff2" as="font" type="font/woff2" crossorigin />
 		<script is:inline>
 			const stored = document.cookie
 				.split("; ")
@@ -49,7 +46,8 @@ const { title = "Lucas Audart - Développeur Frontend", description = "" } =
 			let nextDirection = "forward";
 			let nextTransition = "default";
 
-			const isDetailPath = (p) => p.startsWith("/conferences/") && !CONF_TABS.includes(p);
+			const isDetailPath = (p) =>
+				p.startsWith("/conferences/") && !CONF_TABS.includes(p);
 
 			const CONF_TABS = [
 				"/conferences",
@@ -71,7 +69,10 @@ const { title = "Lucas Audart - Développeur Frontend", description = "" } =
 					sessionStorage.setItem("conferences-back", fromPath);
 				}
 
-				if (CONF_TABS.includes(fromPath) && CONF_TABS.includes(toPath)) {
+				if (
+					CONF_TABS.includes(fromPath) &&
+					CONF_TABS.includes(toPath)
+				) {
 					nextTransition = "tab";
 				} else {
 					if (isDetailPath(fromPath) || isDetailPath(toPath)) {
@@ -96,8 +97,12 @@ const { title = "Lucas Audart - Développeur Frontend", description = "" } =
 						? "dark"
 						: "light");
 
-				if (nextTransition === "conference" || nextTransition === "tab") {
-					document.documentElement.dataset.transition = nextTransition;
+				if (
+					nextTransition === "conference" ||
+					nextTransition === "tab"
+				) {
+					document.documentElement.dataset.transition =
+						nextTransition;
 					delete document.documentElement.dataset.direction;
 				} else {
 					delete document.documentElement.dataset.transition;
@@ -108,7 +113,9 @@ const { title = "Lucas Audart - Développeur Frontend", description = "" } =
 		<slot name="head" />
 	</head>
 	<body>
+		<main role="main">
+			<slot />
+		</main>
 		<VerticalLabel />
-		<slot />
 	</body>
 </html>

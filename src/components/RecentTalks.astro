@@ -69,8 +69,6 @@ const talks: TalkEntry[] = allConferences
   })
   .filter((t): t is TalkEntry => t !== null);
 
-console.log("allConferences : ", talks);
-
 const incommingTalksSorted = talks
   .filter((t) => t.status === "PROCHAIN")
   .sort((a, b) => a.eventDate.getTime() - b.eventDate.getTime());
