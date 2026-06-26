@@ -24,7 +24,7 @@ const placeholderImage = thumbnail
   : undefined;
 ---
 
-<div class="hero">
+<div class:list={["hero", { "hero--no-thumbnail": !thumbnail }]}>
   {thumbnail && (
     <div
       class="hero-bg-placeholder"
@@ -339,6 +339,65 @@ const placeholderImage = thumbnail
     .meta-divider--links {
       display: none;
     }
+  }
+
+  /* --- no-thumbnail variant --- */
+  .hero--no-thumbnail {
+    height: auto;
+    background-color: var(--color-bg);
+  }
+
+  .hero--no-thumbnail .hero-gradient {
+    display: none;
+  }
+
+  .hero--no-thumbnail .back-link {
+    color: var(--color-text-muted);
+  }
+
+  .hero--no-thumbnail .back-link:hover {
+    color: var(--color-text);
+  }
+
+  .hero--no-thumbnail .tag {
+    color: var(--color-text-muted);
+    border-color: var(--color-border);
+  }
+
+  .hero--no-thumbnail .tag--primary {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  .hero--no-thumbnail .hero-title {
+    color: var(--color-text);
+  }
+
+  .hero--no-thumbnail .meta-author {
+    color: var(--color-text);
+  }
+
+  .hero--no-thumbnail .meta-count {
+    color: var(--color-text-muted);
+  }
+
+  .hero--no-thumbnail .meta-divider {
+    background: var(--color-border);
+  }
+
+  .hero--no-thumbnail .quick-link {
+    color: var(--color-text-muted);
+    border-color: var(--color-border);
+  }
+
+  .hero--no-thumbnail .quick-link:hover {
+    color: var(--color-text);
+    border-color: var(--color-text-muted);
+  }
+
+  .hero--no-thumbnail .quick-link-tooltip {
+    background: var(--color-text);
+    color: var(--color-bg);
   }
 </style>
 

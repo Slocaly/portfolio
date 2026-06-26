@@ -54,7 +54,7 @@ const conferences = defineCollection({
     slides: z.string().url().optional(),
     videoLink: z.string().url().optional(),
     references: z.array(z.string().url()).optional(),
-    thumbnail: image(),
+    thumbnail: image().optional(),
     photos: z.array(image()).optional(),
   }),
 });
