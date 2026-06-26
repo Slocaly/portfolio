@@ -19,6 +19,8 @@ export type TalkEvent = {
   conf: string;
   dateMs: number;
   loc: string;
+  lat: number;
+  lng: number;
   fb: string | null;
   vid: string | null;
 };
@@ -68,6 +70,8 @@ export async function getTalks(): Promise<Talk[]> {
           conf: e.name,
           dateMs: e.date.getTime(),
           loc: e.location.name,
+          lat: e.location.lat,
+          lng: e.location.lng,
           fb: e.feedbackLink ?? null,
           vid: e.videoLink ?? null,
         })),

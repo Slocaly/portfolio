@@ -3,7 +3,7 @@ import type { ConferenceStats } from "../lib/conferences";
 
 interface Props {
   stats: ConferenceStats;
-  activeTab: "date" | "talk" | "conference";
+  activeTab: "date" | "talk" | "conference" | "lieu";
 }
 
 const { stats, activeTab } = Astro.props;
@@ -54,6 +54,12 @@ const { stats, activeTab } = Astro.props;
       class:list={["tab", { "tab--active": activeTab === "conference" }]}
     >
       Par conférence
+    </a>
+    <a
+      href="/conferences/lieu"
+      class:list={["tab", { "tab--active": activeTab === "lieu" }]}
+    >
+      Par lieu
     </a>
   </div>
 </div>
