@@ -63,24 +63,6 @@ const current = Astro.url.pathname;
   }
 </nav>
 
-<script>
-  import { WebHaptics } from "web-haptics";
-
-  const haptics = new WebHaptics();
-
-  function attachHaptics() {
-    document.querySelectorAll(".bottom-nav a").forEach((link) => {
-      link.addEventListener("click", () => {
-        haptics.trigger([{ duration: 10 }], { intensity: 1 });
-      });
-    });
-  }
-
-  attachHaptics();
-
-  document.addEventListener("astro:page-load", attachHaptics);
-</script>
-
 <style>
   header {
     position: sticky;
