@@ -1,193 +1,223 @@
 @font-face {
-  font-family: 'Archivo';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url('/fonts/archivo-400.woff2') format('woff2');
+    font-family: "Archivo";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url("/fonts/archivo-400.woff2") format("woff2");
 }
 
 @font-face {
-  font-family: 'Archivo';
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: url('/fonts/archivo-500.woff2') format('woff2');
+    font-family: "Archivo";
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url("/fonts/archivo-500.woff2") format("woff2");
 }
 
 @font-face {
-  font-family: 'Archivo';
-  font-style: normal;
-  font-weight: 600;
-  font-display: swap;
-  src: url('/fonts/archivo-600.woff2') format('woff2');
+    font-family: "Archivo";
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url("/fonts/archivo-600.woff2") format("woff2");
 }
 
 @font-face {
-  font-family: 'Archivo Expanded';
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src: url('/fonts/archivo-expanded-700.woff2') format('woff2');
+    font-family: "Archivo Expanded";
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url("/fonts/archivo-expanded-700.woff2") format("woff2");
 }
 
 @font-face {
-  font-family: 'Archivo Expanded';
-  font-style: normal;
-  font-weight: 800;
-  font-display: swap;
-  src: url('/fonts/archivo-expanded-800.woff2') format('woff2');
+    font-family: "Archivo Expanded";
+    font-style: normal;
+    font-weight: 800;
+    font-display: swap;
+    src: url("/fonts/archivo-expanded-800.woff2") format("woff2");
 }
 
 :root {
-  --color-bg: #efece4;
-  --color-bg-elevated: #f5f2eb;
-  --color-text: #26262b;
-  --color-text-muted: #636059;
-  --color-muted: #9a958c;
-  --color-border: #dcd7cc;
-  --color-block: #a4533c;
-  --color-block-text: #f7f3ec;
-  --color-accent: #a4533c;
-  --color-accent-2: #4d6b5a;
-  --color-bg-rgb: 239,236,228;
-  --color-accent-rgb: 164,83,60;
-  --color-stroke: #dcd7cc;
+    --color-bg: #efece4;
+    --color-bg-elevated: #f5f2eb;
+    --color-text: #26262b;
+    --color-text-muted: #636059;
+    --color-muted: #9a958c;
+    --color-border: #dcd7cc;
+    --color-block: #a4533c;
+    --color-block-text: #f7f3ec;
+    --color-accent: #a4533c;
+    --color-accent-2: #4d6b5a;
+    --color-bg-rgb: 239, 236, 228;
+    --color-accent-rgb: 164, 83, 60;
+    --color-stroke: #dcd7cc;
 
-  --font-display: "Archivo Expanded", "Archivo", sans-serif;
-  --font-sans: "Archivo", -apple-system, "Segoe UI", Roboto, sans-serif;
+    --font-display: "Archivo", -apple-system, "Segoe UI", Roboto, sans-serif;
+    --font-sans: "Archivo", -apple-system, "Segoe UI", Roboto, sans-serif;
 
-  --content-width: 40rem;
-  --wide-width: 100rem;
-  --space-1: 0.5rem;
-  --space-2: 1rem;
-  --space-3: 1.5rem;
-  --space-4: 2.5rem;
-  --space-5: 4rem;
+    --content-width: 40rem;
+    --wide-width: 100rem;
+    --space-1: 0.5rem;
+    --space-2: 1rem;
+    --space-3: 1.5rem;
+    --space-4: 2.5rem;
+    --space-5: 4rem;
 }
 
 [data-theme="dark"] {
-  --color-bg: #1a1916;
-  --color-bg-elevated: #242119;
-  --color-text: #e6e1d8;
-  --color-text-muted: #8c8579;
-  --color-muted: #5e5952;
-  --color-border: #2e2b25;
-  --color-block: #c06350;
-  --color-block-text: #1a1916;
-  --color-accent: #c06350;
-  --color-accent-2: #6e9680;
-  --color-bg-rgb: 26,25,22;
-  --color-accent-rgb: 192,99,80;
-  --color-stroke: #2e2b25;
+    --color-bg: #1a1916;
+    --color-bg-elevated: #242119;
+    --color-text: #e6e1d8;
+    --color-text-muted: #8c8579;
+    --color-muted: #5e5952;
+    --color-border: #2e2b25;
+    --color-block: #c06350;
+    --color-block-text: #1a1916;
+    --color-accent: #c06350;
+    --color-accent-2: #6e9680;
+    --color-bg-rgb: 26, 25, 22;
+    --color-accent-rgb: 192, 99, 80;
+    --color-stroke: #2e2b25;
 }
 
 html[data-theme-animating] *,
 html[data-theme-animating] *::before,
 html[data-theme-animating] *::after {
-  transition: background-color 200ms ease, color 200ms ease,
-              border-color 200ms ease, fill 200ms ease, stroke 200ms ease !important;
+    transition:
+        background-color 200ms ease,
+        color 200ms ease,
+        border-color 200ms ease,
+        fill 200ms ease,
+        stroke 200ms ease !important;
 }
 
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 html,
 body {
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-  min-height: 100vh;
-  overflow-x: hidden;
-  color: var(--color-text);
-  background: var(--color-bg);
-  font-family: var(--font-sans);
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    overflow-x: hidden;
+    color: var(--color-text);
+    background: var(--color-bg);
+    font-family: var(--font-sans);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
 }
 
 a {
-  color: var(--color-accent);
+    color: var(--color-accent);
 }
 
 img,
 svg {
-  display: block;
-  max-width: 100%;
+    display: block;
+    max-width: 100%;
 }
 
 @media (max-width: 639px) {
-  body {
-    padding-bottom: 4rem;
-  }
+    body {
+        padding-bottom: 4rem;
+    }
 }
 
 /* View transitions: directional slide + fade */
 @keyframes slide-fade-out-left {
-  to { transform: translateX(-1.5rem); opacity: 0; }
+    to {
+        transform: translateX(-1.5rem);
+        opacity: 0;
+    }
 }
 @keyframes slide-fade-in-right {
-  from { transform: translateX(1.5rem); opacity: 0; }
+    from {
+        transform: translateX(1.5rem);
+        opacity: 0;
+    }
 }
 @keyframes slide-fade-out-right {
-  to { transform: translateX(1.5rem); opacity: 0; }
+    to {
+        transform: translateX(1.5rem);
+        opacity: 0;
+    }
 }
 @keyframes slide-fade-in-left {
-  from { transform: translateX(-1.5rem); opacity: 0; }
+    from {
+        transform: translateX(-1.5rem);
+        opacity: 0;
+    }
 }
 
 /* Direction defaults (forward); overridden via data-direction="backward" */
 html {
-  --_vt-exit: slide-fade-out-left;
-  --_vt-enter: slide-fade-in-right;
+    --_vt-exit: slide-fade-out-left;
+    --_vt-enter: slide-fade-in-right;
 }
 html[data-direction="backward"] {
-  --_vt-exit: slide-fade-out-right;
-  --_vt-enter: slide-fade-in-left;
+    --_vt-exit: slide-fade-out-right;
+    --_vt-enter: slide-fade-in-left;
 }
 
 ::view-transition-old(root) {
-  animation: var(--_vt-exit) 0.28s ease-in forwards;
+    animation: var(--_vt-exit) 0.28s ease-in forwards;
 }
 ::view-transition-new(root) {
-  animation: var(--_vt-enter) 0.28s ease-out forwards;
+    animation: var(--_vt-enter) 0.28s ease-out forwards;
 }
 
 /* Conference detail: slide up to open, slide down to close */
 @keyframes conference-slide-up {
-  from { transform: translateY(100%); opacity: 0; }
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
 }
 @keyframes conference-slide-down {
-  to { transform: translateY(100%); opacity: 0; }
+    to {
+        transform: translateY(100%);
+        opacity: 0;
+    }
 }
 @keyframes vt-instant {
-  from { opacity: 1; }
-  to   { opacity: 1; }
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 1;
+    }
 }
 @keyframes vt-hidden {
-  from { opacity: 0; }
-  to   { opacity: 0; }
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 0;
+    }
 }
 
 /* When a conference detail is involved, keep root static (list shows through) */
 html[data-transition="conference"] {
-  --_vt-exit: vt-instant;
-  --_vt-enter: vt-instant;
+    --_vt-exit: vt-instant;
+    --_vt-enter: vt-instant;
 }
 
 /* Tab switches: old page invisible, new page visible immediately — no slide */
 html[data-transition="tab"] {
-  --_vt-exit: vt-hidden;
-  --_vt-enter: vt-instant;
+    --_vt-exit: vt-hidden;
+    --_vt-enter: vt-instant;
 }
 
 ::view-transition-new(conference-page) {
-  animation: conference-slide-up 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    animation: conference-slide-up 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 ::view-transition-old(conference-page) {
-  animation: conference-slide-down 0.3s ease-in forwards;
+    animation: conference-slide-down 0.3s ease-in forwards;
 }
 
 /* Persistent elements: instant swap, no animation */
@@ -199,13 +229,12 @@ html[data-transition="tab"] {
 ::view-transition-new(bottom-nav),
 ::view-transition-old(vertical-label),
 ::view-transition-new(vertical-label) {
-  animation: none;
+    animation: none;
 }
 
-
 @media (prefers-reduced-motion: reduce) {
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
-    animation: none;
-  }
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+        animation: none;
+    }
 }

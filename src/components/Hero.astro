@@ -3,351 +3,365 @@ import { Image } from "astro:assets";
 import ProfileImage from "../assets/home/profil.png";
 
 const socials = {
-  github: "https://github.com/Slocaly",
-  linkedin: "https://www.linkedin.com/in/lucas-audart/",
-  bluesky: "https://bsky.app/profile/slocaly.bsky.social",
+    github: "https://github.com/Slocaly",
+    linkedin: "https://www.linkedin.com/in/lucas-audart/",
+    bluesky: "https://bsky.app/profile/slocaly.bsky.social",
 };
 ---
 
 <section class="hero">
-  <div class="ghost" aria-hidden="true">
-    <div class="ghost-track">
-      <span>Frontend&nbsp;•&nbsp;Frontend&nbsp;•&nbsp;</span>
-      <span>Frontend&nbsp;•&nbsp;Frontend&nbsp;•&nbsp;</span>
+    <div class="ghost" aria-hidden="true">
+        <div class="ghost-track">
+            <span>Frontend&nbsp;•&nbsp;Frontend&nbsp;•&nbsp;</span>
+            <span>Frontend&nbsp;•&nbsp;Frontend&nbsp;•&nbsp;</span>
+        </div>
     </div>
-  </div>
 
-  <div class="left-col">
-    <div class="content">
-      <h1 class="name">
-        Lucas<br />
-        Audart
-      </h1>
-      <div class="eyebrow">
-        <span class="eyebrow-line"></span>
-        <span class="eyebrow-text">Développeur Frontend @Kolecto | Speaker</span>
-      </div>
-      <div class="bio-block">
-        <ul class="socials">
-          <li>
-            <a href={socials.github} target="_blank" aria-label="GitHub">
-              <svg
-                viewBox="0 0 1024 1024"
-                xmlns="http://www.w3.org/2000/svg"
-                width="1024"
-                height="1024"
-                fill="none"
-                ><path
-                  fill="currentColor"
-                  fill-rule="evenodd"
-                  d="M512 0C229.12 0 0 229.12 0 512c0 226.56 146.56 417.92 350.08 485.76 25.6 4.48 35.2-10.88 35.2-24.32 0-12.16-.64-52.48-.64-95.36-128.64 23.68-161.92-31.36-172.16-60.16-5.76-14.72-30.72-60.16-52.48-72.32-17.92-9.6-43.52-33.28-.64-33.92 40.32-.64 69.12 37.12 78.72 52.48 46.08 77.44 119.68 55.68 149.12 42.24 4.48-33.28 17.92-55.68 32.64-68.48-113.92-12.8-232.96-56.96-232.96-252.8 0-55.68 19.84-101.76 52.48-137.6-5.12-12.8-23.04-65.28 5.12-135.68 0 0 42.88-13.44 140.8 52.48 40.96-11.52 84.48-17.28 128-17.28s87.04 5.76 128 17.28c97.92-66.56 140.8-52.48 140.8-52.48 28.16 70.4 10.24 122.88 5.12 135.68 32.64 35.84 52.48 81.28 52.48 137.6 0 196.48-119.68 240-233.6 252.8 18.56 16 34.56 46.72 34.56 94.72 0 68.48-.64 123.52-.64 140.8 0 13.44 9.6 29.44 35.2 24.32C877.44 929.92 1024 737.92 1024 512 1024 229.12 794.88 0 512 0"
-                  clip-rule="evenodd"></path></svg
-              >
-            </a>
-          </li>
-          <li>
-            <a href={socials.linkedin} target="_blank" aria-label="LinkedIn">
-              <svg
-                width="256"
-                height="256"
-                xmlns="http://www.w3.org/2000/svg"
-                preserveAspectRatio="xMidYMid"
-                viewBox="0 0 256 256"
-                ><path
-                  d="M218.123 218.127h-37.931v-59.403c0-14.165-.253-32.4-19.728-32.4-19.756 0-22.779 15.434-22.779 31.369v60.43h-37.93V95.967h36.413v16.694h.51a39.907 39.907 0 0 1 35.928-19.733c38.445 0 45.533 25.288 45.533 58.186l-.016 67.013ZM56.955 79.27c-12.157.002-22.014-9.852-22.016-22.009-.002-12.157 9.851-22.014 22.008-22.016 12.157-.003 22.014 9.851 22.016 22.008A22.013 22.013 0 0 1 56.955 79.27m18.966 138.858H37.95V95.967h37.97v122.16ZM237.033.018H18.89C8.58-.098.125 8.161-.001 18.471v219.053c.122 10.315 8.576 18.582 18.89 18.474h218.144c10.336.128 18.823-8.139 18.966-18.474V18.454c-.147-10.33-8.635-18.588-18.966-18.453"
-                  fill="currentColor"></path></svg
-              >
-            </a>
-          </li>
-          <li>
-            <a href={socials.bluesky} target="_blank" aria-label="Bluesky">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="256"
-                height="226"
-                preserveAspectRatio="xMidYMid"
-                viewBox="0 0 256 226"
-                ><path
-                  fill="currentColor"
-                  d="M55.491 15.172c29.35 22.035 60.917 66.712 72.509 90.686 11.592-23.974 43.159-68.651 72.509-90.686C221.686-.727 256-13.028 256 26.116c0 7.818-4.482 65.674-7.111 75.068-9.138 32.654-42.436 40.983-72.057 35.942 51.775 8.812 64.946 38 36.501 67.187-54.021 55.433-77.644-13.908-83.696-31.676-1.11-3.257-1.63-4.78-1.637-3.485-.008-1.296-.527.228-1.637 3.485-6.052 17.768-29.675 87.11-83.696 31.676-28.445-29.187-15.274-58.375 36.5-67.187-29.62 5.041-62.918-3.288-72.056-35.942C4.482 91.79 0 33.934 0 26.116 0-13.028 34.314-.727 55.491 15.172Z"
-                ></path></svg
-              >
-            </a>
-          </li>
-        </ul>
-      </div>
+    <div class="left-col">
+        <div class="content">
+            <h1 class="name">
+                Lucas<br />
+                Audart
+            </h1>
+            <div class="eyebrow">
+                <span class="eyebrow-line"></span>
+                <span class="eyebrow-text"
+                    >Développeur Frontend @Kolecto | Speaker</span
+                >
+            </div>
+            <div class="bio-block">
+                <ul class="socials">
+                    <li>
+                        <a
+                            href={socials.github}
+                            target="_blank"
+                            aria-label="GitHub"
+                        >
+                            <svg
+                                viewBox="0 0 1024 1024"
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="1024"
+                                height="1024"
+                                fill="none"
+                                ><path
+                                    fill="currentColor"
+                                    fill-rule="evenodd"
+                                    d="M512 0C229.12 0 0 229.12 0 512c0 226.56 146.56 417.92 350.08 485.76 25.6 4.48 35.2-10.88 35.2-24.32 0-12.16-.64-52.48-.64-95.36-128.64 23.68-161.92-31.36-172.16-60.16-5.76-14.72-30.72-60.16-52.48-72.32-17.92-9.6-43.52-33.28-.64-33.92 40.32-.64 69.12 37.12 78.72 52.48 46.08 77.44 119.68 55.68 149.12 42.24 4.48-33.28 17.92-55.68 32.64-68.48-113.92-12.8-232.96-56.96-232.96-252.8 0-55.68 19.84-101.76 52.48-137.6-5.12-12.8-23.04-65.28 5.12-135.68 0 0 42.88-13.44 140.8 52.48 40.96-11.52 84.48-17.28 128-17.28s87.04 5.76 128 17.28c97.92-66.56 140.8-52.48 140.8-52.48 28.16 70.4 10.24 122.88 5.12 135.68 32.64 35.84 52.48 81.28 52.48 137.6 0 196.48-119.68 240-233.6 252.8 18.56 16 34.56 46.72 34.56 94.72 0 68.48-.64 123.52-.64 140.8 0 13.44 9.6 29.44 35.2 24.32C877.44 929.92 1024 737.92 1024 512 1024 229.12 794.88 0 512 0"
+                                    clip-rule="evenodd"></path></svg
+                            >
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            href={socials.linkedin}
+                            target="_blank"
+                            aria-label="LinkedIn"
+                        >
+                            <svg
+                                width="256"
+                                height="256"
+                                xmlns="http://www.w3.org/2000/svg"
+                                preserveAspectRatio="xMidYMid"
+                                viewBox="0 0 256 256"
+                                ><path
+                                    d="M218.123 218.127h-37.931v-59.403c0-14.165-.253-32.4-19.728-32.4-19.756 0-22.779 15.434-22.779 31.369v60.43h-37.93V95.967h36.413v16.694h.51a39.907 39.907 0 0 1 35.928-19.733c38.445 0 45.533 25.288 45.533 58.186l-.016 67.013ZM56.955 79.27c-12.157.002-22.014-9.852-22.016-22.009-.002-12.157 9.851-22.014 22.008-22.016 12.157-.003 22.014 9.851 22.016 22.008A22.013 22.013 0 0 1 56.955 79.27m18.966 138.858H37.95V95.967h37.97v122.16ZM237.033.018H18.89C8.58-.098.125 8.161-.001 18.471v219.053c.122 10.315 8.576 18.582 18.89 18.474h218.144c10.336.128 18.823-8.139 18.966-18.474V18.454c-.147-10.33-8.635-18.588-18.966-18.453"
+                                    fill="currentColor"></path></svg
+                            >
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            href={socials.bluesky}
+                            target="_blank"
+                            aria-label="Bluesky"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="256"
+                                height="226"
+                                preserveAspectRatio="xMidYMid"
+                                viewBox="0 0 256 226"
+                                ><path
+                                    fill="currentColor"
+                                    d="M55.491 15.172c29.35 22.035 60.917 66.712 72.509 90.686 11.592-23.974 43.159-68.651 72.509-90.686C221.686-.727 256-13.028 256 26.116c0 7.818-4.482 65.674-7.111 75.068-9.138 32.654-42.436 40.983-72.057 35.942 51.775 8.812 64.946 38 36.501 67.187-54.021 55.433-77.644-13.908-83.696-31.676-1.11-3.257-1.63-4.78-1.637-3.485-.008-1.296-.527.228-1.637 3.485-6.052 17.768-29.675 87.11-83.696 31.676-28.445-29.187-15.274-58.375 36.5-67.187-29.62 5.041-62.918-3.288-72.056-35.942C4.482 91.79 0 33.934 0 26.116 0-13.028 34.314-.727 55.491 15.172Z"
+                                ></path></svg
+                            >
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="photo-responsive" aria-hidden="true">
+            <Image src={ProfileImage} width="600" height="300" alt="" />
+        </div>
+        <div class="talks-wrapper">
+            <slot />
+        </div>
     </div>
-    <div class="photo-responsive" aria-hidden="true">
-      <Image src={ProfileImage} width="600" height="300" alt="" />
-    </div>
-    <div class="talks-wrapper">
-      <slot />
-    </div>
-  </div>
 
-  <div class="right-col">
-    <div class="photo" aria-hidden="true">
-      <Image src={ProfileImage} width="1100" height="800" alt="" />
+    <div class="right-col">
+        <div class="photo" aria-hidden="true">
+            <Image src={ProfileImage} width="1100" height="800" alt="" />
+        </div>
     </div>
-  </div>
 </section>
 
 <style>
-  .hero {
-    position: relative;
-    height: calc(100dvh - 3.25rem);
-    overflow: hidden;
-    display: grid;
-    grid-template-columns: 48% 52%;
-  }
-
-  .left-col {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-
-  .right-col {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    align-items: flex-end;
-  }
-
-  .ghost {
-    position: absolute;
-    top: -0.75rem;
-    left: 0;
-    right: 0;
-    overflow: hidden;
-    margin: 0;
-    pointer-events: none;
-    user-select: none;
-    z-index: 0;
-  }
-
-  .ghost-track {
-    display: flex;
-    white-space: nowrap;
-    line-height: 1;
-    animation: ghost-marquee 14s linear infinite;
-  }
-
-  .ghost-track span {
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: clamp(7rem, 34vw, 22rem);
-    text-transform: uppercase;
-    letter-spacing: -0.02em;
-    color: transparent;
-    -webkit-text-stroke: 1.5px var(--color-stroke);
-  }
-
-  @keyframes ghost-marquee {
-    from {
-      transform: translateX(0);
-    }
-    to {
-      transform: translateX(-50%);
-    }
-  }
-  .photo {
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    display: flex;
-    align-items: flex-end;
-  }
-
-  .photo img,
-  .photo-responsive img {
-    width: 90%;
-    height: auto;
-    max-height: 100%;
-    opacity: 0.9;
-    filter: drop-shadow(-28px 0 56px rgba(0, 0, 0, 0.32));
-  }
-
-  .figure {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    fill: var(--color-text);
-  }
-
-  .content {
-    position: relative;
-    z-index: 2;
-    padding: 4rem 2rem 0 max(2rem, calc((100vw - var(--wide-width)) / 2));
-  }
-
-  .eyebrow {
-    display: flex;
-    align-items: center;
-    gap: 0.875rem;
-    margin: 1.5rem 0;
-  }
-
-  .eyebrow-line {
-    width: 1.75rem;
-    height: 1px;
-    background: var(--color-accent);
-    display: block;
-    flex-shrink: 0;
-  }
-
-  .eyebrow-text {
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--color-accent);
-  }
-
-  .status-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.625rem;
-    padding: 0.5rem 1.125rem;
-    background: var(--color-bg);
-    border: 1px solid var(--color-border);
-    border-radius: 9999px;
-  }
-
-  .status-badge p {
-    margin: 0;
-    font-size: 0.9rem;
-    color: var(--color-text);
-  }
-
-  .status-dot {
-    width: 0.5rem;
-    height: 0.5rem;
-    border-radius: 50%;
-    background: var(--color-accent);
-    flex-shrink: 0;
-  }
-
-  .name {
-    margin: 0;
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: clamp(5rem, 13.5vw, 10.5rem);
-    line-height: 0.86;
-    letter-spacing: -0.03em;
-    text-transform: uppercase;
-    color: var(--color-text);
-    text-shadow:
-      4px 6px 0px rgba(0, 0, 0, 0.08),
-      8px 12px 24px rgba(0, 0, 0, 0.15);
-  }
-
-  .bio-block {
-    position: relative;
-    z-index: 2;
-    max-width: 45rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
-  .bio {
-    margin: 0;
-    font-size: 1.125rem;
-    line-height: 1.8;
-    color: var(--color-text-muted);
-  }
-
-  .socials {
-    display: flex;
-    gap: 0.625rem;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    flex-wrap: wrap;
-  }
-
-  .socials a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 2.5rem;
-    height: 2.5rem;
-    border: 1px solid var(--color-border);
-    border-radius: 0.375rem;
-    color: var(--color-text-muted);
-    background: var(--color-bg);
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
-  }
-
-  .socials a:hover {
-    color: var(--color-accent);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  }
-
-  .socials svg {
-    width: 1.1rem;
-    height: 1.1rem;
-  }
-
-  .photo-responsive {
-    display: none;
-  }
-
-  .talks-wrapper {
-    padding-left: max(0px, calc((100vw - var(--wide-width)) / 2));
-  }
-
-  @media (max-width: 1000px) {
     .hero {
-      grid-template-columns: 1fr;
+        position: relative;
+        height: calc(100dvh - 3.25rem);
+        overflow: hidden;
+        display: grid;
+        grid-template-columns: 48% 52%;
+    }
+
+    .left-col {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
 
     .right-col {
-      display: none;
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: flex-end;
     }
 
-    .talks-wrapper {
-      display: none;
+    .ghost {
+        position: absolute;
+        top: -0.75rem;
+        left: 0;
+        right: 0;
+        overflow: hidden;
+        margin: 0;
+        pointer-events: none;
+        user-select: none;
+        z-index: 0;
     }
 
+    .ghost-track {
+        display: flex;
+        white-space: nowrap;
+        line-height: 1;
+        animation: ghost-marquee 14s linear infinite;
+    }
+
+    .ghost-track span {
+        font-family: var(--font-display);
+        font-weight: 800;
+        font-size: clamp(7rem, 34vw, 22rem);
+        text-transform: uppercase;
+        letter-spacing: -0.02em;
+        color: transparent;
+        -webkit-text-stroke: 1.5px var(--color-stroke);
+    }
+
+    @keyframes ghost-marquee {
+        from {
+            transform: translateX(0);
+        }
+        to {
+            transform: translateX(-50%);
+        }
+    }
+    .photo {
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        display: flex;
+        align-items: flex-end;
+    }
+
+    .photo img,
     .photo-responsive img {
-      width: 100%;
-      height: auto;
+        width: 90%;
+        height: auto;
+        max-height: 100%;
+        opacity: 0.9;
+        filter: drop-shadow(-28px 0 56px rgba(0, 0, 0, 0.32));
     }
 
-    .photo-responsive {
-      display: block;
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-      max-width: 30rem;
-      margin: 0 auto;
-      opacity: 0.7;
+    .figure {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        fill: var(--color-text);
     }
 
     .content {
-      padding-top: 2.5rem;
-      padding-right: 2rem;
+        position: relative;
+        z-index: 2;
+        padding: 4rem 2rem 0 max(2rem, calc((100vw - var(--wide-width)) / 2));
+    }
+
+    .eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 0.875rem;
+        margin: 1.5rem 0;
+    }
+
+    .eyebrow-line {
+        width: 1.75rem;
+        height: 1px;
+        background: var(--color-accent);
+        display: block;
+        flex-shrink: 0;
+    }
+
+    .eyebrow-text {
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--color-accent);
+    }
+
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.625rem;
+        padding: 0.5rem 1.125rem;
+        background: var(--color-bg);
+        border: 1px solid var(--color-border);
+        border-radius: 9999px;
+    }
+
+    .status-badge p {
+        margin: 0;
+        font-size: 0.9rem;
+        color: var(--color-text);
+    }
+
+    .status-dot {
+        width: 0.5rem;
+        height: 0.5rem;
+        border-radius: 50%;
+        background: var(--color-accent);
+        flex-shrink: 0;
+    }
+
+    .name {
+        margin: 0;
+        font-family: var(--font-display);
+        font-weight: 800;
+        font-size: clamp(5rem, 13.5vw, 15.5rem);
+        line-height: 0.86;
+        letter-spacing: -0.03em;
+        text-transform: uppercase;
+        color: var(--color-text);
+        text-shadow:
+            4px 6px 0px rgba(0, 0, 0, 0.08),
+            8px 12px 24px rgba(0, 0, 0, 0.15);
     }
 
     .bio-block {
-      padding-bottom: 4rem;
-      padding-right: 2rem;
-      margin-top: 1rem;
-      gap: 1rem;
+        position: relative;
+        z-index: 2;
+        max-width: 45rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
     }
-  }
 
-  @media (max-width: 639px) {
-    .hero {
-      height: 100dvh;
-      padding-top: var(--space-4);
+    .bio {
+        margin: 0;
+        font-size: 1.125rem;
+        line-height: 1.8;
+        color: var(--color-text-muted);
     }
-  }
+
+    .socials {
+        display: flex;
+        gap: 0.625rem;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        flex-wrap: wrap;
+    }
+
+    .socials a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.5rem;
+        height: 2.5rem;
+        border: 1px solid var(--color-border);
+        border-radius: 0.375rem;
+        color: var(--color-text-muted);
+        background: var(--color-bg);
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .socials a:hover {
+        color: var(--color-accent);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .socials svg {
+        width: 1.1rem;
+        height: 1.1rem;
+    }
+
+    .photo-responsive {
+        display: none;
+    }
+
+    .talks-wrapper {
+        padding-left: max(0px, calc((100vw - var(--wide-width)) / 2));
+    }
+
+    @media (max-width: 1000px) {
+        .hero {
+            grid-template-columns: 1fr;
+        }
+
+        .right-col {
+            display: none;
+        }
+
+        .talks-wrapper {
+            display: none;
+        }
+
+        .photo-responsive img {
+            width: 100%;
+            height: auto;
+        }
+
+        .photo-responsive {
+            display: block;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            max-width: 30rem;
+            margin: 0 auto;
+            opacity: 0.7;
+        }
+
+        .content {
+            padding-top: 2.5rem;
+            padding-right: 2rem;
+        }
+
+        .bio-block {
+            padding-bottom: 4rem;
+            padding-right: 2rem;
+            margin-top: 1rem;
+            gap: 1rem;
+        }
+    }
+
+    @media (max-width: 639px) {
+        .hero {
+            height: 100dvh;
+            padding-top: var(--space-4);
+        }
+    }
 </style>
