@@ -76,10 +76,7 @@ const incommingTalksSorted = talks
 const passedTalksSorted = talks
   .filter((t) => t.status === "PASSÉ")
   .sort((a, b) => b.eventDate.getTime() - a.eventDate.getTime())
-  .slice(
-    0,
-    (incommingTalksSorted.length === 0 ? 4 : incommingTalksSorted.length) - 1,
-  );
+  .slice(0, 3 - incommingTalksSorted.length);
 ---
 
 <section class="recent-talks">
