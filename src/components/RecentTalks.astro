@@ -36,38 +36,17 @@ type TalkEntry = {
   status: "PROCHAIN" | "PASSÉ";
 };
 
-const talks: TalkEntry[] = allConferences
-  .map((conf) => {
-    const events = conf.data.events.filter(
-      (event) => !internalEvents.includes(event.name),
-    );
-    const futureEvents = events
-      .filter((e) => e.date > today)
-      .sort((a, b) => a.date.getTime() - b.date.getTime());
-    const pastEvents = events
-      .filter((e) => e.date <= today)
-      .sort((a, b) => b.date.getTime() - a.date.getTime());
-
-    if (futureEvents.length > 0) {
-      return {
-        id: conf.id,
-        title: conf.data.title,
-        eventName: futureEvents[0].name,
-        eventDate: futureEvents[0].date,
-        status: "PROCHAIN" as const,
-      };
-    } else if (pastEvents.length > 0) {
-      return {
-        id: conf.id,
-        title: conf.data.title,
-        eventName: pastEvents[0].name,
-        eventDate: pastEvents[0].date,
-        status: "PASSÉ" as const,
-      };
-    }
-    return null;
-  })
-  .filter((t): t is TalkEntry => t !== null);
+const talks: TalkEntry[] = allConferences.flatMap((conf) =>
+  conf.data.events
+    .filter((event) => !internalEvents.includes(event.name))
+    .map((event) => ({
+      id: conf.id,
+      title: conf.data.title,
+      eventName: event.name,
+      eventDate: event.date,
+      status: event.date > today ? ("PROCHAIN" as const) : ("PASSÉ" as const),
+    })),
+);
 
 const incommingTalksSorted = talks
   .filter((t) => t.status === "PROCHAIN")
@@ -106,16 +85,18 @@ const passedTalksSorted = talks
       </>
     )
   }
-  <div class="talks-header recent">
-    <span class="section-label">TALKS RÉCENTS</span>
-    {
-      incommingTalksSorted.length === 0 && (
-        <a href="/conferences" class="see-all">
-          TOUT VOIR →
-        </a>
-      )
-    }
-  </div>
+  {
+    passedTalksSorted.length !== 0 && (
+      <div class="talks-header recent">
+        <span class="section-label">TALKS RÉCENTS</span>
+        {incommingTalksSorted.length === 0 && (
+          <a href="/conferences" class="see-all">
+            TOUT VOIR →
+          </a>
+        )}
+      </div>
+    )
+  }
   <div class="talks-list">
     {
       passedTalksSorted.map((talk) => (
