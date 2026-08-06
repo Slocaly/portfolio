@@ -5,12 +5,15 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview",
+    "preview": "pnpm run build && wrangler dev",
     "astro": "astro",
-    "lint": "oxlint"
+    "lint": "oxlint",
+    "deploy": "pnpm run build && wrangler deploy",
+    "cf-typegen": "wrangler types"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.9",
+    "@astrojs/cloudflare": "12",
     "@astrojs/mdx": "^5.0.6",
     "@types/leaflet": "^1.9.21",
     "astro": "^5.17.3",
@@ -19,6 +22,7 @@
     "typescript": "^6.0.3"
   },
   "devDependencies": {
-    "oxlint": "^1.49.0"
+    "oxlint": "^1.49.0",
+    "wrangler": "^4.107.1"
   }
 }
