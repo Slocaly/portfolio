@@ -6,6 +6,8 @@ import { readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import mdx from '@astrojs/mdx';
 
+import cloudflare from "@astrojs/cloudflare";
+
 /** Astro integration that replaces `script-src 'self'` in dist/_headers
  *  with exact SHA-256 hashes of every inline script in the built HTML. */
 function cspHashes() {
@@ -51,4 +53,5 @@ function cspHashes() {
 export default defineConfig({
   site: 'https://slocaly.dev',
   integrations: [mdx(), cspHashes()],
+  adapter: cloudflare()
 });
