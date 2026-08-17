@@ -2,9 +2,15 @@
 import "../styles/global.css";
 import VerticalLabel from "../components/VerticalLabel.astro";
 import { ClientRouter } from "astro:transitions";
+import { getImage } from "astro:assets";
+import ProfileImage from "../assets/home/profil.png";
 
 const { title = "Lucas Audart - Développeur Frontend", description = "" } =
 	Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const ogImage = await getImage({ src: ProfileImage, width: 1200, height: 1200 });
+const ogImageURL = new URL(ogImage.src, Astro.site);
 ---
 
 <!doctype html>
@@ -16,7 +22,20 @@ const { title = "Lucas Audart - Développeur Frontend", description = "" } =
 		<link rel="icon" href="/favicon.ico" sizes="32x32" />
 		<meta name="generator" content={Astro.generator} />
 		<meta name="description" content={description} />
+		<link rel="canonical" href={canonicalURL} />
 		<title>{title}</title>
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="Lucas Audart" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonicalURL} />
+		<meta property="og:image" content={ogImageURL} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="1200" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImageURL} />
 		<ClientRouter />
 		<link rel="preload" href="/fonts/archivo-400.woff2" as="font" type="font/woff2" crossorigin />
 		<link rel="preload" href="/fonts/archivo-expanded-700.woff2" as="font" type="font/woff2" crossorigin />
@@ -113,7 +132,8 @@ const { title = "Lucas Audart - Développeur Frontend", description = "" } =
 		<slot name="head" />
 	</head>
 	<body>
-		<main role="main">
+		<a href="#main-content" class="skip-link">Aller au contenu principal</a>
+		<main role="main" id="main-content">
 			<slot />
 		</main>
 		<VerticalLabel />

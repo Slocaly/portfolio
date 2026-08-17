@@ -116,6 +116,25 @@ a {
     color: var(--color-accent);
 }
 
+.skip-link {
+    position: fixed;
+    top: -3rem;
+    left: var(--space-2);
+    z-index: 999;
+    padding: 0.625rem 1.125rem;
+    background: var(--color-text);
+    color: var(--color-bg);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 0.375rem;
+    transition: top 0.2s ease;
+}
+
+.skip-link:focus-visible {
+    top: var(--space-2);
+}
+
 img,
 svg {
     display: block;

@@ -49,5 +49,6 @@ function cspHashes() {
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://slocaly.dev',
   integrations: [mdx(), cspHashes()],
 });
