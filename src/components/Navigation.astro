@@ -5,10 +5,12 @@ import IconHome from "./IconHome.astro";
 import IconUser from "./IconUser.astro";
 import IconMic from "./IconMic.astro";
 import IconPen from "./IconPen.astro";
+import IconFolder from "./IconFolder.astro";
 
 const desktopLinks = [
   { label: "Accueil", href: "/" },
   { label: "À propos", href: "/about" },
+  { label: "Projets", href: "/projects" },
   { label: "Conférences", href: "/conferences" },
   // { label: "Blog", href: "/blog" },
 ];
@@ -16,6 +18,7 @@ const desktopLinks = [
 const mobileLinks = [
   { label: "Accueil", href: "/", Icon: IconHome },
   { label: "À propos", href: "/about", Icon: IconUser },
+  { label: "Projets", href: "/projects", Icon: IconFolder },
   { label: "Conférences", href: "/conferences", Icon: IconMic },
   // { label: "Blog", href: "/blog", Icon: IconPen },
 ];

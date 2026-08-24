@@ -1,0 +1,221 @@
+---
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
+import Navigation from "../components/Navigation.astro";
+import Layout from "../layouts/Layout.astro";
+import SectionLabel from "../components/SectionLabel.astro";
+
+const statusLabels = {
+  online: "En ligne",
+  "coming-soon": "Bientôt",
+  archived: "Archivé",
+};
+
+const projects = (await getCollection("projects")).map((project) => ({
+  ...project.data,
+  hostname: new URL(project.data.href).hostname,
+  statusLabel: statusLabels[project.data.status],
+}));
+---
+
+<Layout
+  title="Projets — Lucas Audart"
+  description="Découvrez les projets personnels que j'ai développés, avec leurs technologies et liens vers les applications en ligne."
+>
+  <Navigation />
+
+  <section class="hero">
+    <div class="wrap">
+      <SectionLabel label="Lucas Audart" />
+      <h1 class="hero-title">Projets</h1>
+    </div>
+  </section>
+
+  <div class="wrap grid-wrap">
+    <div class="grid">
+      {
+        projects.map((project) => (
+          <a href={project.href} target="_blank" rel="noopener" class="card">
+            <div class="thumb">
+              <Image src={project.image} alt="" width={640} height={360} />
+            </div>
+            <div class="card-body">
+              <div class="card-head">
+                <h3>{project.title}</h3>
+                <span class:list={["status", `status--${project.status}`]}>
+                  {project.statusLabel}
+                </span>
+              </div>
+              <p class="description">{project.description}</p>
+              <div class="card-foot">
+                <div class="tags">
+                  {project.tags.map((tag) => <span class="tag">{tag}</span>)}
+                </div>
+                <span class="hostname">{project.hostname}</span>
+              </div>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .hero {
+    padding: 4.5rem 0 3.25rem;
+  }
+  .hero-title {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(2.75rem, 6vw, 5rem);
+    letter-spacing: -0.025em;
+    color: var(--color-text);
+    line-height: 1;
+    margin: 0;
+  }
+
+  .wrap {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .grid-wrap {
+    padding-bottom: 6rem;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    overflow: hidden;
+    text-decoration: none;
+    transition: transform 0.25s ease;
+  }
+
+  .card:hover {
+    transform: scale(1.015);
+  }
+
+  .thumb {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    flex-shrink: 0;
+    overflow: hidden;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .thumb :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+  }
+
+  .card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+    padding: 1.75rem;
+    flex: 1;
+  }
+
+  .card-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .card-head h3 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--color-text);
+    letter-spacing: -0.01em;
+  }
+
+  .status {
+    flex-shrink: 0;
+    font-size: 0.63rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.5rem;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+
+  .status--online {
+    color: color-mix(in srgb, var(--color-accent-2) 55%, #22c55e 45%);
+    background: color-mix(in srgb, var(--color-accent-2) 22%, transparent);
+  }
+
+  .status--coming-soon,
+  .status--archived {
+    color: var(--color-muted);
+    background: color-mix(in srgb, var(--color-accent) 8%, transparent);
+  }
+
+  .description {
+    margin: 0;
+    font-size: 0.85rem;
+    line-height: 1.65;
+    color: var(--color-text-muted);
+    text-wrap: pretty;
+  }
+
+  .card-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-top: auto;
+    padding-top: 0.875rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+  }
+
+  .tag {
+    font-size: 0.63rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--color-accent) 85%, var(--color-text));
+    border: 1px solid color-mix(in srgb, var(--color-accent) 30%, transparent);
+    padding: 0.2rem 0.45rem;
+    border-radius: 2px;
+  }
+
+  .hostname {
+    font-size: 0.72rem;
+    color: var(--color-muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 640px) {
+    .hero {
+      padding-top: 1.5rem;
+    }
+
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

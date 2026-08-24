@@ -1,0 +1,8 @@
+{
+  "title": "Slogodle",
+  "description": "Devinez le logo tech du jour — un petit jeu quotidien pour les curieux de marques.",
+  "tags": ["tanstack-start", "react"],
+  "href": "https://logo.slocaly.dev",
+  "status": "online",
+  "image": "/src/assets/projects/slogodle.png"
+}

@@ -83,10 +83,23 @@ const experiences = defineCollection({
   }),
 });
 
+const projects = defineCollection({
+  loader: glob({ pattern: "**/*.json", base: "./src/projects" }),
+  schema: ({ image }) => z.object({
+    title: z.string(),
+    description: z.string(),
+    tags: z.array(z.string()),
+    href: z.string().url(),
+    status: z.enum(["online", "coming-soon", "archived"]),
+    image: image(),
+  }),
+});
+
 export const collections = {
   articles,
   conferences,
   authors,
   experiences,
   education,
+  projects,
 };

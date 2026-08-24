@@ -53,7 +53,7 @@ const ogImageURL = new URL(ogImage.src, Astro.site);
 			document.documentElement.dataset.theme = theme;
 		</script>
 		<script is:inline>
-			const PAGE_ORDER = ["/", "/about", "/conferences"];
+			const PAGE_ORDER = ["/", "/about", "/projects", "/conferences"];
 
 			function getPageRank(pathname) {
 				const idx = PAGE_ORDER.findIndex((p) =>
