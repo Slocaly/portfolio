@@ -5,6 +5,8 @@ const MONTHS = [
   "juil.", "août", "sept.", "oct.", "nov.", "déc.",
 ];
 
+export const REMOTE_LABEL = "À distance";
+
 export function fmtDate(ms: number): string {
   const d = new Date(ms);
   return d.getDate() + " " + MONTHS[d.getMonth()];
@@ -19,8 +21,10 @@ export type TalkEvent = {
   conf: string;
   dateMs: number;
   loc: string;
-  lat: number;
-  lng: number;
+  lat: number | null;
+  lng: number | null;
+  remote: boolean;
+  lang: "fr" | "en";
   fb: string | null;
   vid: string | null;
 };
@@ -69,9 +73,11 @@ export async function getTalks(): Promise<Talk[]> {
         events: conf.data.events.map((e) => ({
           conf: e.name,
           dateMs: e.date.getTime(),
-          loc: e.location.name,
-          lat: e.location.lat,
-          lng: e.location.lng,
+          loc: e.location?.name ?? REMOTE_LABEL,
+          lat: e.location?.lat ?? null,
+          lng: e.location?.lng ?? null,
+          remote: e.remote,
+          lang: e.language,
           fb: e.feedbackLink ?? null,
           vid: e.videoLink ?? null,
         })),
@@ -91,7 +97,7 @@ export async function getTalks(): Promise<Talk[]> {
 export function getConferenceStats(talks: Talk[]): ConferenceStats {
   const totalTalks = talks.length;
   const totalEvents = talks.reduce((sum, t) => sum + t.events.length, 0);
-  const uniqueCities = new Set(talks.flatMap((t) => t.events.map((e) => e.loc)));
+  const uniqueCities = new Set(talks.flatMap((t) => t.events.filter((e) => e.lat !== null).map((e) => e.loc)));
   const totalCities = uniqueCities.size;
   const allYears = talks.flatMap((t) =>
     t.events.map((e) => new Date(e.dateMs).getFullYear()),

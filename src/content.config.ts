@@ -35,11 +35,15 @@ const ZEvent = ({ image }: { image: ImageFunction }) => z.object({
     name: z.string(),
     lat: z.number(),
     lng: z.number(),
-  }),
+  }).optional(),
+  remote: z.boolean().default(false),
+  language: z.enum(["fr", "en"]).default("fr"),
   logo: image(),
   photos: z.array(z.string()).optional(),
   feedbackLink: z.string().url().optional(),
   videoLink: z.string().url().optional(),
+}).refine((e) => e.remote || e.location, {
+  message: "location is required unless the event is remote",
 });
 
 const conferences = defineCollection({

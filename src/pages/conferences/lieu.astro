@@ -17,6 +17,7 @@ type PinData = {
 const pinMap = new Map<string, PinData>();
 for (const talk of talks) {
   for (const ev of talk.events) {
+    if (ev.lat === null || ev.lng === null) continue;
     const existing = pinMap.get(ev.loc);
     if (existing) {
       existing.talks.push({

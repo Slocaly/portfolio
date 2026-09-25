@@ -50,7 +50,7 @@ const coSpeaker = authors ? await getEntry(authors) : null;
     </div>
 
     <ConferenceGallery photos={photos} />
-    <ConferenceMap locations={events.map((e) => e.location)} />
+    <ConferenceMap locations={events.flatMap((e) => (e.location ? [e.location] : []))} />
   </div>
 </Layout>
 
