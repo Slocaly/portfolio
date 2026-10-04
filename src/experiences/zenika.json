@@ -1,10 +1,14 @@
 {
   "company": "Zenika",
-  "role": "Consultant Frontend",
-  "startDate": "2021-10-01",
-  "endDate": "2025-03-31",
   "location": "Lyon",
+  "logo": "/src/assets/experiences/zenika_logo.png",
   "description": "Réalisation de missions régies, formation et audit.",
   "tags": ["conseil", "react", "formation", "Organisation conférence"],
-  "logo": "/src/assets/experiences/zenika_logo.png"
+  "roles": [
+    {
+      "role": "Consultant Frontend",
+      "startDate": "2021-10-01",
+      "endDate": "2025-03-31"
+    }
+  ]
 }

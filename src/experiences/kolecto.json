@@ -1,10 +1,24 @@
 {
   "company": "Kolecto",
-  "role": "Staff Engineer",
-  "startDate": "2023-06-01",
-  "endDate": null,
   "location": "Paris",
+  "logo": "/src/assets/experiences/kolecto_logo.jpeg",
   "description": "Développement de l'application de facturation Kolecto, en vue du passage à la facturation électronique",
   "tags": ["react", "typescript", "tanstack-query", "NextJs", "tailwindcss"],
-  "logo": "/src/assets/experiences/kolecto_logo.jpeg"
+  "roles": [
+    {
+      "role": "Staff Engineer",
+      "startDate": "2026-07-01",
+      "endDate": null
+    },
+    {
+      "role": "Lead Dev Frontend",
+      "startDate": "2025-06-01",
+      "endDate": "2026-07-01"
+    },
+    {
+      "role": "Développeur Frontend",
+      "startDate": "2023-06-01",
+      "endDate": "2025-06-01"
+    }
+  ]
 }

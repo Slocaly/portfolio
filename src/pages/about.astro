@@ -25,7 +25,7 @@ function fmtDate(d: Date) {
 }
 
 function fmtPeriod(start: Date, end: Date | null) {
-  return `${fmtDate(start)} — ${end ? fmtDate(end) : "Aujourd'hui"}`;
+  return `${fmtDate(start)} - ${end ? fmtDate(end) : "Aujourd'hui"}`;
 }
 
 const eduRaw = await getCollection("education");
@@ -35,17 +35,33 @@ const educationList = eduRaw.sort((a, b) =>
 
 const raw = await getCollection("experiences");
 const experiences = raw
-  .sort((a, b) => b.data.startDate.getTime() - a.data.startDate.getTime())
-  .map((e) => ({
-    company: e.data.company,
-    role: e.data.role,
-    period: fmtPeriod(e.data.startDate, e.data.endDate),
-    loc: e.data.location,
-    desc: e.data.description,
-    tags: e.data.tags,
-  }));
+  .map((e) => {
+    const roles = [...e.data.roles].sort(
+      (a, b) => b.startDate.getTime() - a.startDate.getTime(),
+    );
+    const start = roles[roles.length - 1].startDate;
+    const end = roles.some((r) => r.endDate === null)
+      ? null
+      : new Date(Math.max(...roles.map((r) => r.endDate!.getTime())));
+    return {
+      company: e.data.company,
+      logo: e.data.logo,
+      start,
+      period: fmtPeriod(start, end),
+      loc: e.data.location,
+      desc: e.data.description,
+      tags: e.data.tags,
+      roles: roles.map((r) => ({
+        role: r.role,
+        period: fmtPeriod(r.startDate, r.endDate),
+        current: r.endDate === null,
+        desc: r.description,
+      })),
+    };
+  })
+  .sort((a, b) => b.start.getTime() - a.start.getTime());
 
-const startYear = Math.min(...raw.map((e) => e.data.startDate.getFullYear()));
+const startYear = Math.min(...experiences.map((e) => e.start.getFullYear()));
 ---
 
 <Layout
@@ -97,7 +113,7 @@ const startYear = Math.min(...raw.map((e) => e.data.startDate.getFullYear()));
               <div class="timeline-body">
                 <div class="job-logo" aria-hidden="true">
                   <Image
-                    src={raw[i].data.logo}
+                    src={job.logo}
                     alt=""
                     width={264}
                   />
@@ -105,7 +121,9 @@ const startYear = Math.min(...raw.map((e) => e.data.startDate.getFullYear()));
                 <span class="job-period">{job.period}</span>
                 <h3 class="job-company">{job.company}</h3>
                 <div class="job-meta">
-                  <span class="job-role">{job.role}</span>
+                  {job.roles.length === 1 && (
+                    <span class="job-role">{job.roles[0].role}</span>
+                  )}
                   <span class="job-loc">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -120,6 +138,22 @@ const startYear = Math.min(...raw.map((e) => e.data.startDate.getFullYear()));
                     {job.loc}
                   </span>
                 </div>
+                {job.roles.length > 1 && (
+                  <ol class="job-roles">
+                    {job.roles.map((r) => (
+                      <li
+                        class:list={[
+                          "job-roles-item",
+                          { "job-roles-item--current": r.current },
+                        ]}
+                      >
+                        <span class="job-roles-name">{r.role}</span>
+                        <span class="job-roles-period">{r.period}</span>
+                        {r.desc && <p class="job-roles-desc">{r.desc}</p>}
+                      </li>
+                    ))}
+                  </ol>
+                )}
                 <p class="job-desc">{job.desc}</p>
                 <div class="job-tags">
                   {job.tags.map((tag) => (
@@ -347,6 +381,48 @@ const startYear = Math.min(...raw.map((e) => e.data.startDate.getFullYear()));
     border-radius: 2px;
   }
 
+  /* Successive roles within one company: a single rail, current role in accent */
+  .job-roles {
+    list-style: none;
+    margin: 0.9rem 0 0;
+    padding: 0;
+    max-width: 30rem;
+  }
+  .job-roles-item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: baseline;
+    column-gap: 1.5rem;
+    padding: 0.4rem 0 0.4rem 0.9rem;
+    border-left: 1px solid var(--color-border);
+  }
+  .job-roles-item--current {
+    border-left: 2px solid var(--color-accent);
+    padding-left: calc(0.9rem - 1px);
+  }
+  .job-roles-name {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
+  }
+  .job-roles-item--current .job-roles-name {
+    font-weight: 600;
+    color: var(--color-text);
+  }
+  .job-roles-period {
+    font-size: 0.73rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+  }
+  .job-roles-desc {
+    grid-column: 1 / -1;
+    margin: 0.3rem 0 0;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--color-text-muted);
+  }
+
   /* Education */
   @media (max-width: 640px) {
     .hero {
@@ -357,6 +433,10 @@ const startYear = Math.min(...raw.map((e) => e.data.startDate.getFullYear()));
     }
     .timeline-body {
       padding-right: 0;
+    }
+    .job-roles-item {
+      grid-template-columns: 1fr;
+      row-gap: 0.15rem;
     }
   }
 

@@ -77,13 +77,16 @@ const experiences = defineCollection({
   loader: glob({ pattern: "**/*.json", base: "./src/experiences" }),
   schema: ({ image }) => z.object({
     company: z.string(),
-    role: z.string(),
-    startDate: z.coerce.date(),
-    endDate: z.coerce.date().nullable(),
     location: z.string(),
+    logo: image(),
     description: z.string(),
     tags: z.array(z.string()),
-    logo: image(),
+    roles: z.array(z.object({
+      role: z.string(),
+      startDate: z.coerce.date(),
+      endDate: z.coerce.date().nullable(),
+      description: z.string().optional(),
+    })).min(1),
   }),
 });
 
