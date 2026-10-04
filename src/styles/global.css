@@ -247,13 +247,26 @@ html[data-transition="tab"] {
 ::view-transition-old(bottom-nav),
 ::view-transition-new(bottom-nav),
 ::view-transition-old(vertical-label),
-::view-transition-new(vertical-label) {
+::view-transition-new(vertical-label),
+::view-transition-group(author-label),
+::view-transition-old(author-label),
+::view-transition-new(author-label) {
     animation: none;
+}
+
+/* Author label present on only one side: follow the page animation */
+::view-transition-old(author-label):only-child {
+    animation: var(--_vt-exit) 0.28s ease-in forwards;
+}
+::view-transition-new(author-label):only-child {
+    animation: var(--_vt-enter) 0.28s ease-out forwards;
 }
 
 @media (prefers-reduced-motion: reduce) {
     ::view-transition-old(root),
-    ::view-transition-new(root) {
+    ::view-transition-new(root),
+    ::view-transition-old(author-label):only-child,
+    ::view-transition-new(author-label):only-child {
         animation: none;
     }
 }

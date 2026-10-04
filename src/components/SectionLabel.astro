@@ -2,12 +2,17 @@
 interface Props {
   label: string;
   tight?: boolean;
+  /** Keeps the label in place across page transitions (use once per page). */
+  persist?: boolean;
 }
 
-const { label, tight = false } = Astro.props;
+const { label, tight = false, persist = false } = Astro.props;
 ---
 
-<div class:list={["section-label", { "section-label--tight": tight }]}>
+<div
+  class:list={["section-label", { "section-label--tight": tight }]}
+  style={persist ? "view-transition-name: author-label" : undefined}
+>
   <span class="section-rule" aria-hidden="true"></span>
   <span class="section-name">{label}</span>
 </div>
