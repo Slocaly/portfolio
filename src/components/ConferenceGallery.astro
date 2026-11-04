@@ -1,5 +1,5 @@
 ---
-import { Image } from "astro:assets";
+import { Image, getImage } from "astro:assets";
 import SectionLabel from "./SectionLabel.astro";
 
 interface Props {
@@ -7,14 +7,28 @@ interface Props {
 }
 
 const { photos } = Astro.props;
+
+const fullSizes = photos
+  ? await Promise.all(
+      photos.map((photo) =>
+        getImage({ src: photo, width: Math.min(photo.width, 1920), format: "avif" })
+      )
+    )
+  : [];
 ---
 
 {photos && photos.length > 0 && (
   <div class="gallery-wrapper">
     <SectionLabel label="Photos" />
     <div class="gallery-grid">
-      {photos.map((photo) => (
-        <div class="gallery-item">
+      {photos.map((photo, index) => (
+        <button
+          type="button"
+          class="gallery-item"
+          data-index={index}
+          data-full={fullSizes[index].src}
+          aria-label={`Agrandir la photo ${index + 1} sur ${photos.length}`}
+        >
           <Image
             src={photo}
             height={220}
@@ -24,9 +38,21 @@ const { photos } = Astro.props;
             format="avif"
             class="gallery-img"
           />
-        </div>
+        </button>
       ))}
     </div>
+
+    <dialog class="lightbox" aria-label="Galerie photos">
+      <button type="button" class="lightbox-btn lightbox-close" aria-label="Fermer">✕</button>
+      {photos.length > 1 && (
+        <>
+          <button type="button" class="lightbox-btn lightbox-prev" aria-label="Photo précédente">‹</button>
+          <button type="button" class="lightbox-btn lightbox-next" aria-label="Photo suivante">›</button>
+        </>
+      )}
+      <img class="lightbox-img" alt="" />
+      <p class="lightbox-counter" aria-live="polite"></p>
+    </dialog>
   </div>
 )}
 
@@ -37,13 +63,160 @@ const { photos } = Astro.props;
     flex-wrap: wrap;
     gap: 0.75rem;
   }
+  .gallery-item {
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: zoom-in;
+    overflow: hidden;
+  }
+  .gallery-item:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
   .gallery-img {
     height: 220px;
     width: auto;
     display: block;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+  .gallery-item:hover .gallery-img {
+    transform: scale(1.03);
+    opacity: 0.9;
+  }
+
+  .lightbox {
+    width: 100vw;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #f5f2eb;
+  }
+  .lightbox[open] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: lightbox-fade 0.2s ease;
+  }
+  :global(html:has(.lightbox[open])) {
+    overflow: hidden;
+  }
+  .lightbox::backdrop {
+    background: rgba(10, 10, 9, 0.92);
+  }
+  .lightbox-img {
+    max-width: calc(100vw - 8rem);
+    max-height: calc(100dvh - 6rem);
+    object-fit: contain;
+    user-select: none;
+  }
+  .lightbox-btn {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    color: inherit;
+    font-size: 1.75rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+  .lightbox-btn:hover { background: rgba(255, 255, 255, 0.18); }
+  .lightbox-btn:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+  .lightbox-close { top: 1rem; right: 1rem; font-size: 1.1rem; }
+  .lightbox-prev { left: 1rem; top: 50%; transform: translateY(-50%); }
+  .lightbox-next { right: 1rem; top: 50%; transform: translateY(-50%); }
+  .lightbox-counter {
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    opacity: 0.7;
+  }
+
+  @keyframes lightbox-fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
   }
 
   @media (max-width: 768px) {
     .gallery-img { height: 150px; }
+    .lightbox-img { max-width: 100vw; max-height: calc(100dvh - 8rem); }
+    .lightbox-prev, .lightbox-next { top: auto; bottom: 0.5rem; transform: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .gallery-img, .lightbox[open] { transition: none; animation: none; }
+    .gallery-item:hover .gallery-img { transform: none; }
   }
 </style>
+
+<script>
+  function initGalleryLightbox() {
+    const dialog = document.querySelector<HTMLDialogElement>(".lightbox");
+    if (!dialog) return;
+
+    const items = Array.from(document.querySelectorAll<HTMLButtonElement>(".gallery-item"));
+    const img = dialog.querySelector<HTMLImageElement>(".lightbox-img")!;
+    const counter = dialog.querySelector<HTMLElement>(".lightbox-counter")!;
+    let current = 0;
+
+    const show = (index: number) => {
+      current = (index + items.length) % items.length;
+      img.src = items[current].dataset.full!;
+      counter.textContent = `${current + 1} / ${items.length}`;
+    };
+
+    items.forEach((item) =>
+      item.addEventListener("click", () => {
+        show(Number(item.dataset.index));
+        dialog.showModal();
+      })
+    );
+
+    dialog.querySelector(".lightbox-close")?.addEventListener("click", () => dialog.close());
+    dialog.querySelector(".lightbox-prev")?.addEventListener("click", () => show(current - 1));
+    dialog.querySelector(".lightbox-next")?.addEventListener("click", () => show(current + 1));
+
+    // Close when clicking outside the image (on the backdrop area)
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+
+    dialog.addEventListener("keydown", (event) => {
+      if (items.length < 2) return;
+      if (event.key === "ArrowLeft") show(current - 1);
+      if (event.key === "ArrowRight") show(current + 1);
+    });
+
+    // Swipe navigation on touch devices
+    let touchStartX = 0;
+    dialog.addEventListener("touchstart", (event) => {
+      touchStartX = event.touches[0].clientX;
+    }, { passive: true });
+    dialog.addEventListener("touchend", (event) => {
+      const delta = event.changedTouches[0].clientX - touchStartX;
+      if (items.length < 2 || Math.abs(delta) < 50) return;
+      show(delta > 0 ? current - 1 : current + 1);
+    });
+
+    dialog.addEventListener("close", () => {
+      items[current]?.focus();
+    });
+  }
+  document.addEventListener("astro:page-load", initGalleryLightbox);
+</script>
